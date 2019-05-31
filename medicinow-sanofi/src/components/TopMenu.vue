@@ -22,11 +22,19 @@
     </div>
     <div>
       <h1 class="presentation-text">A melhor solução do mercado para agendamento de consultas.</h1>
-      <div class="buttons-container">
-        <b-button class="ml-auto" variant="outline-primary">Acesse</b-button>
-        <b-button margin= 10px variant="outline-primary">Registre-se</b-button>
-        <b-button variant="outline-primary">Baixe o a</b-button>
-      </div>
+        <div class='buttons-container'>
+          <b-row>
+            <b-col lg="4" class="pb-2">
+            <b-button variant="outline-dark" size="lg">Registre-se</b-button>
+            </b-col>
+            <b-col lg="4" class="pb-2">
+            <b-button class="ml-auto" variant="outline-primary" size="lg">Acesse</b-button>
+            </b-col>
+            <b-col lg="4" class="pb-2">
+            <b-button variant="outline-dark" size="lg">Baixe o aplicativo</b-button>
+            </b-col>
+          </b-row>
+        </div>
     </div>
   </div>
 </template>
@@ -47,7 +55,7 @@ export default {
 }
 .buttons-container{
   text-align: center;
-  margin: 10px;
+  margin: 0 300px;
 }
 </style>
 
