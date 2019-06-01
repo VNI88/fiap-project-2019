@@ -1,16 +1,16 @@
 <template>
   <div >
-    <TopMenu/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import TopMenu from './components/TopMenu.vue'
+import landingPage1 from './components/landingPage1.vue';
 
 export default {
   name: 'app',
-  components: {
-    TopMenu
+ components: {
+    landingPage1
   }
 }
 </script>
