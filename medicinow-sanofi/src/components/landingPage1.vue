@@ -11,7 +11,7 @@
 
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto" >
-            <b-nav-item  href="#/sobre_nos"> Sobre nós</b-nav-item>
+            <b-nav-item  href="#"> Sobre nós</b-nav-item>
             <b-nav-item  href="#">Plataforma</b-nav-item>
             <b-nav-item  href="#">Contato</b-nav-item>
           </b-navbar-nav>
@@ -27,7 +27,7 @@
         <div class='buttons-container'>
           <b-row>
             <b-col lg="4" class="pb-2">
-              <b-button variant="outline-dark" size="lg">Registre-se</b-button>
+              <b-button href="/#/register " variant="outline-dark" size="lg">Registre-se</b-button>
             </b-col>
             <b-col lg="4" class="pb-2">
               <b-button class="ml-auto" variant="outline-primary" size="lg">Acesse</b-button>
@@ -46,7 +46,7 @@
 <script>
 
 export default {
-  name: 'TopMenu',
+  name: 'home',
   props: {
   }
 
