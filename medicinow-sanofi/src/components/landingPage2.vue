@@ -53,7 +53,7 @@
           <b-row>
             <b-col lg="1" class="pb-2">
               <b-form-group
-                id="input-group-6"
+                id="input-group-3"
                 label="Sexo:"
                 label-align-sm="left" 
               >
@@ -61,7 +61,7 @@
             </b-col>
             <b-col lg="4">
               <b-form-radio-group
-                id="input-6"
+                id="input-3"
                 :options="['Masculino', 'Feminino']"
               ></b-form-radio-group>
             </b-col >
@@ -69,7 +69,7 @@
             </b-col> 
             <b-col lg="2">
               <b-form-group
-                id="input-group-6"
+                id="input-group-4"
                 label="Você é médico?"
                 label-align-sm="left" class="mb-0"
               >
@@ -77,19 +77,19 @@
             </b-col>
             <b-col lg="3">
               <b-form-radio-group
-                id="input-6"
+                id="input-4"
                 :options="['Sim', 'Não']"
               ></b-form-radio-group>
             </b-col>
           </b-row>
 
           <b-form-group
-            id="input-group-3"
+            id="input-group-5"
             label="Email:"
-            label-for="input-3"
+            label-for="input-5"
           >
           <b-form-input
-            id="input-3"
+            id="input-5"
             v-model="form.email"
             type="email"
             required
@@ -100,12 +100,12 @@
           <b-row>
             <b-col>
               <b-form-group
-                id="input-group-4"
+                id="input-group-6"
                 label="Senha:"
-                label-for="input-4"
+                label-for="input-6"
               >
               <b-form-input
-                id="input-4"
+                id="input-6"
                 v-model="form.password"
                 type="password"
                 required
@@ -119,13 +119,13 @@
             </b-col>
             <b-col>
               <b-form-group
-                id="input-group-5"
+                id="input-group-7"
                 label="Confirmação de senha:"
-                label-for="input-5"
+                label-for="input-7"
               >
               <b-form-input
-                id="input-5"
-                v-model="form.password"
+                id="input-7"
+                v-model="form.confirmpassword"
                 type="password"
                 required
                 placeholder="Insira a senha mesma senha digitada anteriormente"
@@ -138,12 +138,12 @@
           <b-row>
             <b-col lg="9" class="pb-2">
               <b-form-group
-                id="input-group-6"
+                id="input-group-8"
                 label="Endereço:"
-                label-for="input-6"
+                label-for="input-8"
               >
               <b-form-input
-                id="input-5"
+                id="input-9"
                 v-model="form.address"
                 required
                 placeholder="Insira o endereço"
@@ -152,13 +152,13 @@
             </b-col>
             <b-col lg="3" class="pb-2">
               <b-form-group
-                id="input-group-7"
+                id="input-group-10"
                 label="Número:"
                 label-align-sm="left" class="mb-0"
-                label-for="input-7"
+                label-for="input-10"
               >
               <b-form-input
-                id="input-7"
+                id="input-10"
                 v-model="form.number"
                 required
               ></b-form-input>
@@ -166,12 +166,12 @@
             </b-col>
           </b-row>
           <b-form-group
-            id="input-group-8"
+            id="input-group-11"
             label="CRM:"
-            label-for="input-8"
+            label-for="input-11"
           >
           <b-form-input
-           id="input-8"
+           id="input-11"
            v-model="form.crm"
            required
            placeholder="Insira o CRM"
@@ -179,9 +179,9 @@
           </b-form-group> 
           
           <b-form-group
-            id="input-group-9"
+            id="input-group-12"
             label="Especialidade:"
-            label-for="input-9"
+            label-for="input-12"
           > 
           <b-form-select v-model="selected" 
           :options="['Endocrinologista', 'Mastologista', 'Otorrinolaringologista','Dentista']"
@@ -190,6 +190,9 @@
         </b-form>
       </b-card>
       
+    </div>
+    <div class="buttons-container">
+      <b-button  variant="outline-dark" size="lg">Finalizar Cadastro</b-button>
     </div>
   </div>
 </template>
@@ -216,13 +219,17 @@ export default {
 <style scoped>
 .form {
   text-align: justify;
-  margin: 50px 200px 100px 200px;
+  margin: 50px 200px 20px 200px;
   
 }
 .text {
   margin-top: 30px;
   text-align: center;
   font-weight: bold;
+}
+.buttons-container{
+  text-align: center;
+  margin:0px 0px 20px 0px;
 }
 
 </style>
