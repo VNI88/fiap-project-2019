@@ -1,28 +1,16 @@
 <template>
   <div class="loginpage">
-  <b-row  >
-    <b-col height="100%" align="center">
-      <b-img height="200em"  :src="require('../assets/bandaids.png')"  alt="Responsive image" />
+
+  <div class="size">
+  <b-row>
+    <b-col height="100%" align="center" >
+      <b-img  :src="require('../assets/bandaids.png')"  alt="Responsive image" />
     <h1 class='txt'>MediciNow</h1>
+
   </b-col>
+
   <b-col height="100%">
     <b-form >
-      <b-form-group
-        id="input-group-1"
-        label="Nome:"
-        label-for="input-1"
-        label-size="lg"
-        label-class="font-weight-bold pt-0"
-      >
-      <b-form-input
-       id="input-1"
-       v-model="form.name"
-       required
-       placeholder="Primeiro nome"
-       size="lg"
-      ></b-form-input>
-      </b-form-group>
-
       <b-form-group
         id="input-group-5"
         label="E-mail:"
@@ -39,13 +27,34 @@
         size="lg"
       ></b-form-input>
       </b-form-group>
+
+      <b-form-group
+        id="input-group-6"
+        label="Senha:"
+        label-for="input-6"
+        label-size="lg"
+        label-class="font-weight-bold pt-0"
+      >
+      <b-form-input
+        id="input-6"
+        v-model="form.password"
+        size="lg"
+        type="password"
+        required
+        placeholder="Insira a senha"
+      ></b-form-input>
+      </b-form-group>
     </b-form >
-    <div text-align="center">
-     <b-button variant="outline-dark" size="lg" >Login</b-button>
+    <div class="text-center">
+     <b-button variant="outline-dark" size="lg">Login</b-button>
+     <p class="note">Esqueceu sua senha?
+       <a href=" ">Clique aqui</a>
+     </p>
    </div>
 
   </b-col>
   </b-row>
+    </div>
     </div>
   </template>
 
@@ -68,16 +77,17 @@
 </script>
 
 <style>
-.logo {
-  margin:10px;
+.note {
+   margin-top: 20px;
 }
 .txt {
   font-weight:bold;
   text-align: center;
 }
 .size {
-  display: block;
-     width: 100%;
+  margin: 200px 0px 200px 0px;
+  height:  100%;
+
 }
 
 </style>
