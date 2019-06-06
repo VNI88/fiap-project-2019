@@ -6,9 +6,9 @@
           <b-img height="35" :src="require('../assets/bandaids.png')"  alt="Responsive image" />
           MediciNow
         </b-navbar-brand>
-        
+
         <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
-        
+
         <b-collapse id="nav-collapse" is-nav>
           <b-navbar-nav class="ml-auto" >
             <b-nav-item  href="#"> Sobre nós</b-nav-item>
@@ -18,11 +18,11 @@
         </b-collapse>
       </b-navbar>
     </div>
-    
+
     <h1 class="text" >Cadastro</h1>
-    
+
     <div class="form">
-      <b-card>  
+      <b-card>
         <b-form >
           <b-form-group
             id="input-group-1"
@@ -36,7 +36,7 @@
            placeholder="Primeiro nome"
           ></b-form-input>
           </b-form-group>
-          
+
           <b-form-group
             id="input-group-2"
             label="Sobrenome:"
@@ -49,13 +49,13 @@
            placeholder="Último nome"
           ></b-form-input>
           </b-form-group>
-          
+
           <b-row>
             <b-col lg="1" class="pb-2">
               <b-form-group
                 id="input-group-3"
                 label="Sexo:"
-                label-align-sm="left" 
+                label-align-sm="left"
               >
               </b-form-group>
             </b-col>
@@ -66,7 +66,7 @@
               ></b-form-radio-group>
             </b-col >
             <b-col lg="1">
-            </b-col> 
+            </b-col>
             <b-col lg="2">
               <b-form-group
                 id="input-group-4"
@@ -96,7 +96,7 @@
             placeholder="Insira o email"
           ></b-form-input>
           </b-form-group>
-          
+
           <b-row>
             <b-col>
               <b-form-group
@@ -134,7 +134,7 @@
               </b-form-group>
             </b-col>
           </b-row>
-          
+
           <b-row>
             <b-col lg="9" class="pb-2">
               <b-form-group
@@ -176,23 +176,23 @@
            required
            placeholder="Insira o CRM"
           ></b-form-input>
-          </b-form-group> 
-          
+          </b-form-group>
+
           <b-form-group
             id="input-group-12"
             label="Especialidade:"
             label-for="input-12"
-          > 
-          <b-form-select v-model="selected" 
+          >
+          <b-form-select v-model="selected"
           :options="['Endocrinologista', 'Mastologista', 'Otorrinolaringologista','Dentista']"
           ></b-form-select>
-          </b-form-group> 
+          </b-form-group>
         </b-form>
       </b-card>
-      
+
     </div>
     <div class="buttons-container">
-      <b-button  variant="outline-dark" size="lg">Finalizar Cadastro</b-button>
+      <b-button href="/#/login"  variant="outline-dark" size="lg">Finalizar Cadastro</b-button>
     </div>
   </div>
 </template>
@@ -220,7 +220,7 @@ export default {
 .form {
   text-align: justify;
   margin: 50px 200px 20px 200px;
-  
+
 }
 .text {
   margin-top: 30px;

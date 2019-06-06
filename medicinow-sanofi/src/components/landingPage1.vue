@@ -30,7 +30,7 @@
               <b-button href="/#/register " variant="outline-dark" size="lg">Registre-se</b-button>
             </b-col>
             <b-col lg="4" class="pb-2">
-              <b-button class="ml-auto" variant="outline-primary" size="lg">Acesse</b-button>
+              <b-button class="ml-auto" href="/#/login" variant="outline-primary" size="lg">Acesse</b-button>
             </b-col>
             <b-col lg="4" class="pb-2">
               <b-button variant="outline-dark" size="lg">Baixe o aplicativo</b-button>
