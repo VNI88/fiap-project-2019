@@ -33,6 +33,7 @@
           </b-col>
         </b-row>
       </div>
+
       <div class="plataform-explanation" id="plataform">
         <b-row>
           <b-col>
@@ -43,18 +44,76 @@
           </b-col>
         </b-row>
       </div>
+      <div class="contact">
+        <b-card-group >
+          <b-card title="Dúvidas?" sub-title="Deixe sua mensagem abaixo, lhe responderemos o mais rápido possível.">
+            <b-form>
+              <b-form-group
+              id="input-group-1"
+              label="Nome:"
+              label-for="input-1"
+              >
+              <b-form-input
+              id="input-1"
+              v-model="form.name"
+              required
+              placeholder="Digite aqui seu nome"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-group
+              id="input-group-5"
+              label="Email:"
+              label-for="input-5"
+              >
+              <b-form-input
+              id="input-5"
+              v-model="form.email"
+              type="email"
+              required
+              placeholder="Insira o email"
+              ></b-form-input>
+            </b-form-group>
+
+            <b-form-textarea
+            id="textarea"
+            v-model="text"
+            placeholder="Digite aqui sua mensagem"
+            rows="3"
+            max-rows="6"
+            ></b-form-textarea>
+          </b-form>
+        </b-card>
+        <b-card title="Contatos">
+          <b-card-text>
+            Endereço: Avenida Lins de Vasconcelos, 356, Cambuci, São Paulo.<br/>
+            Telefone: (11) 99843-6963
+          </b-card-text>
+        </b-card>
+      </b-card-group>
     </div>
-
-
   </div>
+
+
+</div>
 </template>
 
 <script>
 
 export default {
   name: 'home',
-  props: {
+  data() {
+  return {
+    form: {
+      name: '',
+      email: '',
+      food: null,
+      checked: []
+    },
+    foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
+    show: true
   }
+  },
 
 }
 </script>
@@ -75,6 +134,9 @@ export default {
 }
 .plataform-explanation{
   margin: 0px 50px 100px 0px;
+}
+.contact{
+  margin: 100px 200px 0px 200px;
 }
 .plataform-text{
   margin-top: 50px;
