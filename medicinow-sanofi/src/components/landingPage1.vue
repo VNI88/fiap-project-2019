@@ -1,7 +1,7 @@
 <template>
   <div class="home">
-    <div>
-      <b-navbar toggleable="lg" type="light" variant="light" fixed="top ">
+    <div margim-bottom="0px">
+      <b-navbar toggleable="lg" type="light" variant="light" fixed="top">
         <b-navbar-brand href="#">
           <b-img height="35" :src="require('../assets/bandaids.png')"  alt="Responsive image" />
           MediciNow
@@ -19,26 +19,28 @@
     </div>
 
     <div class="presentation">
-      <h1 class="presentation-text">A melhor solução do mercado para agendamento de consultas.</h1>
-      <div class='buttons-container'>
-        <b-row >
-          <b-col lg="4" class="pb-2">
-            <b-button href="/#/register " variant="outline-dark" size="lg">Registre-se</b-button>
-          </b-col>
-          <b-col lg="4" class="pb-2">
-            <b-button class="ml-auto" href="/#/login" variant="outline-primary" size="lg">Acesse</b-button>
-          </b-col>
-          <b-col lg="4" class="pb-2">
-            <b-button variant="outline-dark" size="lg">Baixe o aplicativo</b-button>
-          </b-col>
-        </b-row>
-      </div>
+      <h1 class="presentation-text">A melhor solução do mercado para agendamento de consultas.
+        <div class='buttons-container'>
+          <b-row >
+            <b-col lg="4" class="pb-2">
+              <b-button href="/#/register " variant="outline-dark" size="lg">Registre-se</b-button>
+            </b-col>
+            <b-col lg="4" class="pb-2">
+              <b-button class="ml-auto" href="/#/login" variant="outline-primary" size="lg">Acesse</b-button>
+            </b-col>
+            <b-col lg="4" class="pb-2">
+              <b-button variant="outline-dark" size="lg">Baixe o aplicativo</b-button>
+            </b-col>
+          </b-row>
+        </div>
+      </h1>
+
   </div>
 
   <div class="plataform-explanation">
     <b-row  >
       <b-col bg-variant="primary">
-        <b-img width="400px"height="300px" id="plataform" :src="require('../assets/plataform-img.png')"  alt="Responsive image" />
+        <b-img width="400px" height="300px" id="plataform" :src="require('../assets/plataform-img.png')"  alt="Responsive image" />
       </b-col>
       <b-col>
         <p class="plataform-text">A MediciNow integra mobilidade, praticidade e organização em uma plataforma web e mobile. Marque suas consultas, envie seus exames, veja seu calendário tudo em um único lugar!</p>
@@ -46,7 +48,7 @@
     </b-row>
   </div>
 
-  <div class="contact" id="contact">
+  <div class="contact" id="contact-1">
     <b-card-group >
       <b-card title="Dúvidas?" sub-title="Deixe sua mensagem abaixo, lhe responderemos o mais rápido possível.">
         <b-form>
@@ -93,7 +95,7 @@
       </b-card-text>
       <b-row align="center" >
       <b-col lg="4">
-      <a href="https://www.linkedin.com"><b-img height="35":src="require('../assets/square-linkedin-128.png')"  alt="Responsive image" /></a>
+      <a href="https://www.linkedin.com"><b-img height="35" :src="require('../assets/square-linkedin-128.png')"  alt="Responsive image" /></a>
     </b-col>
     <b-col lg="4">
       <b-img height="35" :src="require('../assets/social-facebook-square2-128.png')"  alt="Responsive image" />
@@ -132,23 +134,24 @@ export default {
 <style>
 .presentation-text {
   text-align: center;
-  margin: 100px;
+  padding: 200px 20px 200px 20px;
   font-size:4em;
 }
 .presentation{
-  height: 400px;
-  margin-bottom: 200px;
+  background-color: aliceblue;
 }
 .buttons-container{
   text-align: center;
-  margin: 0 300px 300px 300px;
+  margin: 30px 0 0 0
 }
 .plataform-explanation{
   margin: 0px 20px 0px 20px;
   align-items: center;
+
 }
 .contact{
-  margin: 300px 200px 100px 200px;
+  padding: 100px 200px 100px 200px;
+  background-color: lightgray;
 }
 .plataform-text{
   margin-top: 50px;
