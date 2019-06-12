@@ -37,13 +37,34 @@
 
   </div>
 
-  <div class="plataform-explanation">
-    <b-row  >
-      <b-col bg-variant="primary">
-        <b-img width="400px" height="300px" id="plataform" :src="require('../assets/plataform-img.png')"  alt="Responsive image" />
+  <div class="plataform-explanation" id="plataform">
+    <h1 class="plataform-title">Plataforma</h1>
+    <b-row >
+      <b-col>
+        <b-card v-b-toggle.collapse-1 align="center" >
+          <b-card-text class="plataform-card-title">
+            Web
+          </b-card-text>
+          <b-img   :src="require('../assets/www-logo.png')"  alt="Responsive image" />
+          <b-collapse id="collapse-1" class="mt-2">
+            <b-card-text>
+              Some quick example text to build on the card title and make up the bulk of the card's content.
+            </b-card-text>
+          </b-collapse>
+        </b-card>
       </b-col>
       <b-col>
-        <p class="plataform-text">A MediciNow integra mobilidade, praticidade e organização em uma plataforma web e mobile. Marque suas consultas, envie seus exames, veja seu calendário tudo em um único lugar!</p>
+        <b-card  v-b-toggle.collapse-2 align="center">
+          <b-card-text class="plataform-card-title" >
+            Mobile
+          </b-card-text>
+          <b-img   :src="require('../assets/mobile.png')"  alt="Responsive image" />
+          <b-collapse id="collapse-2" class="mt-2">
+            <b-card-text>
+              Some quick example text to build on the card title and make up the bulk of the card's content.
+            </b-card-text>
+          </b-collapse>
+        </b-card>
       </b-col>
     </b-row>
   </div>
@@ -137,21 +158,28 @@ export default {
   padding: 200px 20px 200px 20px;
   font-size:4em;
 }
-.presentation{
-  background-color: aliceblue;
+.plataform-title{
+  font-size: 3em;
+  text-align: center;
+  padding-bottom: 10px;
+}
+.plataform-card-title{
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.5em;
+  padding-top: 10px;
 }
 .buttons-container{
   text-align: center;
   margin: 30px 0 0 0
 }
 .plataform-explanation{
-  margin: 0px 20px 0px 20px;
+  padding: 50px 40px 100px 40px;
   align-items: center;
-
+  background-color: aliceblue;
 }
 .contact{
   padding: 100px 200px 100px 200px;
-  background-color: lightgray;
 }
 .plataform-text{
   margin-top: 50px;
