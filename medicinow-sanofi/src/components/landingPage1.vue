@@ -35,10 +35,33 @@
         </div>
       </h1>
   </div>
+  <div>
+    <b-row>
+      <b-col >
+        <b-card >
+          <b-img  height="150px" :src="require('../assets/Doctor.png')"  alt="Responsive image" />
+        </b-card>
+      </b-col>
+      <b-col>
+      </b-col>
+              <transition name="custom-classes-transition" enter-active-class="animated tada" leave-active-class="animated bounceOutRight" >
+      <b-col >
+        <b-img   :src="require('../assets/bandaids.png')"  alt="Responsive image" />
 
+      </b-col>
+    </transition>
+      <b-col>
+      </b-col>
+      <b-col>
+        <b-card >
+          <b-img height="150px"   :src="require('../assets/people.png')"  alt="Responsive image" />
+        </b-card>
+      </b-col>
+    </b-row>
+  </div>
   <div class="plataform-explanation" id="plataform">
     <h1 class="plataform-title">Plataforma</h1>
-    <b-row >
+    <b-row>
       <b-col>
         <b-card v-b-toggle.collapse-1 align="center" >
           <b-card-text class="plataform-card-title">
