@@ -34,7 +34,6 @@
           </b-row>
         </div>
       </h1>
-
   </div>
 
   <div class="plataform-explanation" id="plataform">
