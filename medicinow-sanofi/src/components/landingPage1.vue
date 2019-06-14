@@ -18,15 +18,15 @@
         </b-collapse>
       </b-navbar>
     </div>
-
-    <div class="presentation">
-      <h1 class="presentation-text">A melhor solução do mercado para agendamento de consultas.
-        <div class='buttons-container'>
-          <b-button class="ml-auto" href="/#/login" variant="outline-primary" size="lg">Acesse</b-button>
-        </div>
-      </h1>
+    <div class="bg-img">
+      <div class="presentation">
+        <h1 class="presentation-text">A melhor solução do mercado para agendamento de consultas.
+          <div class='buttons-container'>
+            <b-button class="ml-auto" href="/#/login" variant="outline-primary" size="lg">Acesse</b-button>
+          </div>
+        </h1>
+      </div>
     </div>
-
     <div id="about_us" >
       <b-card align="center">
         <b-img :src="require('../assets/About-us.png')"  alt="Responsive image" />
@@ -209,4 +209,25 @@ export default {
 .copyright-area{
   text-align: center;
 }
+.bg-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background:
+    url("../assets/triangular-back.jpg")
+      center center no-repeat;
+  background-size: cover;
+}
+
+.bg-img:before {
+  content: "";
+  position: absolute;
+  top: 80%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255));
+  pointer-events: none;
+}
+
 </style>
