@@ -39,9 +39,9 @@
       <b-row >
         <b-col >
           <b-card no-body class="overflow-hidden" style="max-width: 540px;">
-            <b-row no-gutters>
+            <b-row no-gutters class="card-padding">
               <b-col md="6">
-                <b-card-img padding="10px":src="require('../assets/www-logo.png')" class="rounded-0"></b-card-img>
+                <b-card-img :src="require('../assets/www-logo.png')" class="rounded-0"></b-card-img>
               </b-col>
               <b-col md="6">
                 <b-card-body title="Web">
@@ -56,9 +56,9 @@
         </b-col>
         <b-col>
           <b-card no-body class="overflow-hidden" style="max-width: 540px;">
-            <b-row no-gutters>
-              <b-col md="6">
-                <b-card-img height="300px" width="300px":src="require('../assets/mobile.png')" class="rounded-0"></b-card-img>
+            <b-row no-gutters class="card-padding">
+              <b-col>
+                <b-card-img class="mobile-card"  :src="require('../assets/mobile.png')" ></b-card-img>
               </b-col>
               <b-col md="6">
                 <b-card-body title="Mobile">
@@ -198,6 +198,9 @@ export default {
 .contact{
   padding: 100px 200px 100px 200px;
 }
+.card-padding{
+  padding: 20px;
+}
 .plataform-text{
   margin-top: 50px;
   font-size: 2em;
@@ -268,6 +271,7 @@ export default {
     opacity: 1;
   }
 }
-
-
+.mobile-card{
+  height: 249px;
+}
 </style>
