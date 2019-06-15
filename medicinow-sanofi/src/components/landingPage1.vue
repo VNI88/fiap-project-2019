@@ -18,7 +18,7 @@
         </b-collapse>
       </b-navbar>
     </div>
-    <div class="bg-img">
+    <div class="bg-img text-focus-in">
       <div class="presentation">
         <h1 class="presentation-text">A melhor solução do mercado para agendamento de consultas.
           <div class='buttons-container'>
@@ -36,38 +36,46 @@
 
     <div class="plataform-explanation" id="plataform">
       <h1 class="plataform-title">Plataforma</h1>
-      <b-row>
-        <b-col>
-          <b-card v-b-toggle.collapse-1 align="center" >
-            <b-card-text class="plataform-card-title">
-              Web
-            </b-card-text>
-            <b-img   :src="require('../assets/www-logo.png')"  alt="Responsive image" />
-            <b-collapse id="collapse-1" class="mt-2">
-              <b-card-text>
-                Acesse ao sistema de qualquer navegador. Veja dashboards customizadas, atualize suas informações e muito mais.
-              </b-card-text>
-            </b-collapse>
+      <b-row >
+        <b-col >
+          <b-card no-body class="overflow-hidden" style="max-width: 540px;">
+            <b-row no-gutters>
+              <b-col md="6">
+                <b-card-img padding="10px":src="require('../assets/www-logo.png')" class="rounded-0"></b-card-img>
+              </b-col>
+              <b-col md="6">
+                <b-card-body title="Web">
+                  <b-card-text>
+                    Acesse ao sistema de qualquer navegador. Veja dashboards customizadas, atualize suas informações e muito mais.
+                  </b-card-text>
+                </b-card-body>
+              </b-col>
+            </b-row>
           </b-card>
+
         </b-col>
         <b-col>
-          <b-card  v-b-toggle.collapse-2 align="center">
-            <b-card-text class="plataform-card-title" >
-              Mobile
-            </b-card-text>
-            <b-img   :src="require('../assets/mobile.png')"  alt="Responsive image" />
-            <b-collapse id="collapse-2" class="mt-2">
-              <b-card-text>
-                Carregue toda a informação que precisa na palma de suas mãos!
-              </b-card-text>
-            </b-collapse>
+          <b-card no-body class="overflow-hidden" style="max-width: 540px;">
+            <b-row no-gutters>
+              <b-col md="6">
+                <b-card-img height="300px" width="300px":src="require('../assets/mobile.png')" class="rounded-0"></b-card-img>
+              </b-col>
+              <b-col md="6">
+                <b-card-body title="Mobile">
+                  <b-card-text>
+                    Carregue toda a informação que precisa na palma de suas mãos!
+                  </b-card-text>
+                </b-card-body>
+              </b-col>
+            </b-row>
           </b-card>
+
         </b-col>
       </b-row>
     </div>
 
     <div class="contact" id="contact-1">
-      <b-card-group >
+      <b-card-group deck>
         <b-card title="Dúvidas?" sub-title="Deixe sua mensagem abaixo, lhe responderemos o mais rápido possível.">
           <b-form>
             <b-form-group
@@ -98,40 +106,36 @@
         </b-form-group>
 
         <b-form-textarea
-        id="textarea"
-        v-model="text"
+        id="textarea-no-resize"
         placeholder="Digite aqui sua mensagem"
-        rows="3"
-        max-rows="6"
+        rows="4"
+        no-resize
         ></b-form-textarea>
       </b-form>
       <div class="contact-button">
-        <b-button  variant="outline-dark" size="sm">Enviar</b-button>
+        <b-button block variant="outline-dark">Enviar</b-button>
       </div>
     </b-card>
     <b-card title="Contatos">
       <b-card-text>
-        Endereço: Avenida Lins de Vasconcelos, 356, Cambuci, São Paulo.<br/>
+        Endereço: R. Líbero Badaró, 101 - Centro Histórico de São Paulo, São Paulo - SP, <br/>
+        CEP: 01009-000<br/>
         Telefone: (11) 99843-6963
       </b-card-text>
-      <b-row align="center" >
-        <b-col lg="4">
-          <a href="https://www.linkedin.com"><b-img height="35" :src="require('../assets/square-linkedin-128.png')"  alt="Responsive image" /></a>
-        </b-col>
-        <b-col lg="4">
-          <b-img height="35" :src="require('../assets/social-facebook-square2-128.png')"  alt="Responsive image" />
-        </b-col>
-        <b-col lg="4">
-          <b-img height="35" :src="require('../assets/instagram-square-128.png')"  alt="Responsive image" />
-        </b-col>
-      </b-row>
+      <a href="https://www.google.com/maps/dir//Soma+Escrit%C3%B3rios+Virtuais+-+R.+L%C3%ADbero+Badar%C3%B3,+101+-+Centro+Hist%C3%B3rico+de+S%C3%A3o+Paulo,+S%C3%A3o+Paulo+-+SP,+01009-000/@-23.5475414,-46.6388483,17.55z/data=!4m16!1m6!3m5!1s0x94ce58534f0e35c5:0xe53badeb628ac709!2sSoma+Escrit%C3%B3rios+Virtuais!8m2!3d-23.5484331!4d-46.6375632!4m8!1m0!1m5!1m1!1s0x94ce58534f0e35c5:0xe53badeb628ac709!2m2!1d-46.6375632!2d-23.5484331!3e2"><b-img align="center" height="200px"round center :src="require('../assets/Maps.png')"  alt="Responsive image" /></a>
+
     </b-card>
-    </b-card-group>
-  </div>
-  <div class="copyright-area">
-    <p> Copyright (c) 2019 MediciNow<br/>
-      All Rights Reserved</p>
-  </div>
+  </b-card-group>
+</div>
+<div class="copyright-area" >
+  <a href="https://www.linkedin.com"><b-img class="social-media"  :src="require('../assets/square-linkedin-128.png')"  alt="Responsive image" /></a>
+  <b-img  class="social-media" :src="require('../assets/social-facebook-square2-128.png')"  alt="Responsive image" />
+  <b-img  class="social-media" :src="require('../assets/instagram-square-128.png')"  alt="Responsive image" />
+  <p>
+    Copyright (c) 2019 MediciNow
+    All Rights Reserved
+  </p>
+</div>
 </div>
 </template>
 
@@ -208,14 +212,21 @@ export default {
 }
 .copyright-area{
   text-align: center;
+  background-color: #f8f9fa;
+  padding-bottom: 10px;
+}
+.social-media{
+  height: 50px;
+  padding:10px;
+  align: center;
 }
 .bg-img {
   position: relative;
   width: 100%;
   height: 100%;
   background:
-    url("../assets/triangular-back.jpg")
-      center center no-repeat;
+  url("../assets/triangular-back.jpg")
+  center center no-repeat;
   background-size: cover;
 }
 
@@ -229,5 +240,34 @@ export default {
   background: linear-gradient(rgba(255, 255, 255, 0), rgb(255, 255, 255));
   pointer-events: none;
 }
+.text-focus-in {
+  -webkit-animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+  animation: text-focus-in 1s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
+@-webkit-keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+@keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    -webkit-filter: blur(0px);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
 
 </style>
