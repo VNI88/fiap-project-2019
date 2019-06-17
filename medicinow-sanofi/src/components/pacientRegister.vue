@@ -1,5 +1,5 @@
 <template>
-  <div class="register">
+  <div class="pacient_register">
     <div>
       <b-navbar toggleable="lg" type="light" variant="light">
         <b-navbar-brand href="#">
@@ -59,27 +59,23 @@
               >
               </b-form-group>
             </b-col>
+            </b-col>
             <b-col lg="4">
               <b-form-radio-group
                 id="input-3"
                 :options="['Masculino', 'Feminino']"
               ></b-form-radio-group>
             </b-col >
-            <b-col lg="1">
-            </b-col>
-            <b-col lg="2">
+            <b-col lg="3" class="pb-2">
               <b-form-group
                 id="input-group-4"
-                label="Você é médico?"
+                label="Data de nascimento:"
                 label-align-sm="left" class="mb-0"
               >
               </b-form-group>
             </b-col>
-            <b-col lg="3">
-              <b-form-radio-group
-                id="input-4"
-                :options="['Sim', 'Não']"
-              ></b-form-radio-group>
+            <b-col lg="3" class="pb-2">
+              <b-form-input type="date"></b-form-input>
             </b-col>
           </b-row>
 
@@ -136,7 +132,7 @@
           </b-row>
 
           <b-row>
-            <b-col lg="9" class="pb-2">
+            <b-col lg="7" class="pb-2">
               <b-form-group
                 id="input-group-8"
                 label="Endereço:"
@@ -150,7 +146,7 @@
               ></b-form-input>
               </b-form-group>
             </b-col>
-            <b-col lg="3" class="pb-2">
+            <b-col lg="5" class="pb-2">
               <b-form-group
                 id="input-group-10"
                 label="Número:"
@@ -161,31 +157,98 @@
                 id="input-10"
                 v-model="form.number"
                 required
+                placeholder="Insira o número de sua residência"
               ></b-form-input>
               </b-form-group>
             </b-col>
           </b-row>
-          <b-form-group
-            id="input-group-11"
-            label="CRM:"
-            label-for="input-11"
-          >
-          <b-form-input
-           id="input-11"
-           v-model="form.crm"
-           required
-           placeholder="Insira o CRM"
-          ></b-form-input>
-          </b-form-group>
+
+          <b-row>
+            <b-col>
+              <b-form-group
+                id="input-group-city"
+                label="Cidade:"
+                label-for="input-city"
+              >
+              <b-form-input
+                id="input-city"
+                v-model="form.city"
+                required
+                placeholder="Insira a sua Cidade"
+              ></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col>
+              <b-form-group
+                id="input-group-state"
+                label="Estado:"
+                label-align-sm="left" class="mb-0"
+                label-for="input-state"
+              >
+              <b-form-input
+                id="input-state"
+                v-model="form.state"
+                required
+                placeholder="Insira o seu Estado"
+              ></b-form-input>
+              </b-form-group>
+            </b-col>
+          </b-row>
+
+          <b-row class="documents">
+            <b-col >
+              <b-form-group
+                id="input-group-doc-rg"
+                label="RG:"
+                label-for="input-rg"
+              >
+              <b-form-input
+                id="input-rg"
+                v-model="form.rg"
+                required
+                placeholder="Insira o seu RG"
+              ></b-form-input>
+              </b-form-group>
+            </b-col>
+            <b-col >
+              <b-form-group
+                id="input-group-doc-cpf"
+                label="CPF:"
+                label-align-sm="left" class="mb-0"
+                label-for="input-cpf"
+              >
+              <b-form-input
+                id="input-cpf"
+                v-model="form.cpf"
+                required
+                placeholder="Insira o seu CPF"
+              ></b-form-input>
+              </b-form-group>
+            </b-col>
+          </b-row>
+
 
           <b-form-group
             id="input-group-12"
-            label="Especialidade:"
+            label="Convênio:"
             label-for="input-12"
           >
           <b-form-select v-model="selected"
-          :options="['Endocrinologista', 'Mastologista', 'Otorrinolaringologista','Dentista']"
+          :options="['Nenhum','Amil', 'Porto Seguro', 'Transmontano','Unimed']"
           ></b-form-select>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-card-number"
+            label="Número da carteirinha:"
+            label-for="input-card-number"
+          >
+          <b-form-input
+           id="input-card-number"
+           v-model="form.cardnumber"
+           required
+           placeholder="Digite o número da cartão de seu convênio - caso a opção anterior tenha sido nenhum, deixe em branco"
+          ></b-form-input>
           </b-form-group>
         </b-form>
       </b-card>
@@ -199,7 +262,7 @@
 
 <script>
 export default {
-  name: 'register',
+  name: 'pacient_register',
   data() {
   return {
     form: {
@@ -230,6 +293,9 @@ export default {
 .buttons-container{
   text-align: center;
   margin:0px 0px 20px 0px;
+}
+.documents{
+  padding: 0px 0px 0px 0px;
 }
 
 </style>

@@ -13,12 +13,16 @@
             <b-nav-item  href="#about_us"> Sobre nós</b-nav-item>
             <b-nav-item  href="#plataform">Plataforma</b-nav-item>
             <b-nav-item  href="#contact-1">Contato</b-nav-item>
-            <b-nav-item   href="/#/register"><b-button  variant="outline-primary" size="sm">Registre-se</b-button></b-nav-item>
+            <b-dropdown size="sm" variant="outline-primary" text="Registre-se" class="m-2">
+              <b-dropdown-item href="/#/pacient_register" >Paciente</b-dropdown-item>
+              <b-dropdown-item href="/#/doctor_register" >Médico</b-dropdown-item>
+            </b-dropdown>
           </b-navbar-nav>
         </b-collapse>
       </b-navbar>
     </div>
-    <div class="bg-img text-focus-in">
+
+    <div class="bg-img-landing text-focus-in">
       <div class="presentation">
         <h1 class="presentation-text">A melhor solução do mercado para agendamento de consultas.
           <div class='buttons-container'>
@@ -52,9 +56,9 @@
               </b-col>
             </b-row>
           </b-card>
-
         </b-col>
         <b-col>
+
           <b-card no-body class="overflow-hidden" style="max-width: 540px;">
             <b-row no-gutters class="card-padding">
               <b-col>
@@ -69,7 +73,6 @@
               </b-col>
             </b-row>
           </b-card>
-
         </b-col>
       </b-row>
     </div>
@@ -122,8 +125,7 @@
         CEP: 01009-000<br/>
         Telefone: (11) 99843-6963
       </b-card-text>
-      <a href="https://www.google.com/maps/dir//Soma+Escrit%C3%B3rios+Virtuais+-+R.+L%C3%ADbero+Badar%C3%B3,+101+-+Centro+Hist%C3%B3rico+de+S%C3%A3o+Paulo,+S%C3%A3o+Paulo+-+SP,+01009-000/@-23.5475414,-46.6388483,17.55z/data=!4m16!1m6!3m5!1s0x94ce58534f0e35c5:0xe53badeb628ac709!2sSoma+Escrit%C3%B3rios+Virtuais!8m2!3d-23.5484331!4d-46.6375632!4m8!1m0!1m5!1m1!1s0x94ce58534f0e35c5:0xe53badeb628ac709!2m2!1d-46.6375632!2d-23.5484331!3e2"><b-img align="center" height="200px"round center :src="require('../assets/Maps.png')"  alt="Responsive image" /></a>
-
+      <a href="https://www.google.com/maps/dir//Soma+Escrit%C3%B3rios+Virtuais+-+R.+L%C3%ADbero+Badar%C3%B3,+101+-+Centro+Hist%C3%B3rico+de+S%C3%A3o+Paulo,+S%C3%A3o+Paulo+-+SP,+01009-000/@-23.5475414,-46.6388483,17.55z/data=!4m16!1m6!3m5!1s0x94ce58534f0e35c5:0xe53badeb628ac709!2sSoma+Escrit%C3%B3rios+Virtuais!8m2!3d-23.5484331!4d-46.6375632!4m8!1m0!1m5!1m1!1s0x94ce58534f0e35c5:0xe53badeb628ac709!2m2!1d-46.6375632!2d-23.5484331!3e2"> <b-img align="center" height="200px" round center :src="require('../assets/Maps.png')"  alt="Responsive image" /> </a>
     </b-card>
   </b-card-group>
 </div>
@@ -223,7 +225,7 @@ export default {
   padding:10px;
   align: center;
 }
-.bg-img {
+.bg-img-landing {
   position: relative;
   width: 100%;
   height: 100%;
@@ -233,7 +235,7 @@ export default {
   background-size: cover;
 }
 
-.bg-img:before {
+.bg-img-landing:before {
   content: "";
   position: absolute;
   top: 80%;
@@ -273,5 +275,6 @@ export default {
 }
 .mobile-card{
   height: 249px;
+  width: 80%;
 }
 </style>

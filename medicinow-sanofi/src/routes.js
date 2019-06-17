@@ -1,17 +1,23 @@
-import landingPage1 from './components/landingPage1.vue';
-import landingPage2  from './components/landingPage2.vue';
+import landingPage from './components/landingPage.vue';
+import pacientRegister  from './components/pacientRegister.vue';
 import loginpage from './components/LoginPage.vue'
+import doctorRegister from './components/doctorRegister.vue'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: landingPage1
+    component: landingPage
   },
   {
-    path: '/register',
-    name: 'register',
-    component: landingPage2
+    path: '/pacient_register',
+    name: 'pacient_register',
+    component: pacientRegister
+  },
+  {
+    path: '/doctor_register',
+    name: 'doctor_register',
+    component: doctorRegister
   },
   {
     path: '/login',

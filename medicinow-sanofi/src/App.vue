@@ -5,9 +5,6 @@
 </template>
 
 <script>
-import landingPage1 from './components/landingPage1.vue';
-import landingPage2 from './components/landingPage2.vue'
-
 export default {
   name: 'app',
  components: {
