@@ -51,8 +51,8 @@
 
   <div >
     <p align="center">Baixe nosso app!</p>
-    <b-img   height="70px" center :src="require('../assets/google-play-badge.png')"  alt="Responsive image" />
-    <b-img   height="46px" center :src="require('../assets/baixar-na-app-store-botao.png')"  alt="Responsive image" />
+    <a href="https://play.google.com/store/apps?hl=pt_BR"> <b-img   height="70px" center :src="require('../assets/google-play-badge.png')"  alt="Responsive image" /> </a>
+    <a href="https://www.apple.com/br/ios/app-store/"><b-img   height="46px" center :src="require('../assets/baixar-na-app-store-botao.png')"  alt="Responsive image" /> </a>
   </div>
 </b-card>
 </div>

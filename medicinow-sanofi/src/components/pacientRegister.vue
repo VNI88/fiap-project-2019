@@ -59,7 +59,6 @@
               >
               </b-form-group>
             </b-col>
-            </b-col>
             <b-col lg="4">
               <b-form-radio-group
                 id="input-3"
