@@ -1,6 +1,6 @@
 import landingPage from './components/landingPage.vue';
 import pacientRegister  from './components/pacientRegister.vue';
-import loginpage from './components/LoginPage.vue'
+import loginpage from './components/login.vue'
 import doctorRegister from './components/doctorRegister.vue'
 
 const routes = [
