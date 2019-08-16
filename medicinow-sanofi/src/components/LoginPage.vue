@@ -1,7 +1,10 @@
 <template>
   <div class="loginpage bg-img" >
   <div class="size">
+
     <b-card  border-variant="light" >
+
+
       <h1 class='txt'>
         <b-img   height="100px" :src="require('../assets/bandaids.png')"  alt="Responsive image" />
         MediciNow

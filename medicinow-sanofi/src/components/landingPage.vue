@@ -24,6 +24,28 @@
 
     <div class="bg-img-landing text-focus-in">
       <div class="presentation">
+        <f7-block-title>Grouped with sticky titles</f7-block-title>
+<f7-list>
+  <f7-list-group>
+    <f7-list-item title="A" group-title></f7-list-item>
+    <f7-list-item title="Aaron "></f7-list-item>
+    <f7-list-item title="Abbie"></f7-list-item>
+    <f7-list-item title="Adam"></f7-list-item>
+  </f7-list-group>
+  <f7-list-group>
+    <f7-list-item title="B" group-title></f7-list-item>
+    <f7-list-item title="Bailey"></f7-list-item>
+    <f7-list-item title="Barclay"></f7-list-item>
+    <f7-list-item title="Bartolo"></f7-list-item>
+  </f7-list-group>
+  <f7-list-group>
+    <f7-list-item title="C" group-title></f7-list-item>
+    <f7-list-item title="Caiden"></f7-list-item>
+    <f7-list-item title="Calvin"></f7-list-item>
+    <f7-list-item title="Candy"></f7-list-item>
+  </f7-list-group>
+</f7-list>
+
         <h1 class="presentation-text">A melhor solução do mercado para agendamento de consultas.
           <div class='buttons-container'>
             <b-button class="ml-auto" href="/#/login" variant="outline-primary" size="lg">Acesse</b-button>
