@@ -1,6 +1,6 @@
 import landingPage from './components/landingPage.vue';
 import pacientRegister  from './components/pacientRegister.vue';
-import loginpage from './components/login.vue'
+import register from './components/register.vue'
 import doctorRegister from './components/doctorRegister.vue'
 
 const routes = [
@@ -20,9 +20,9 @@ const routes = [
     component: doctorRegister
   },
   {
-    path: '/login',
-    name: 'login',
-    component: loginpage
+    path: '/register',
+    name: 'register',
+    component: register
   }
 ];
 
