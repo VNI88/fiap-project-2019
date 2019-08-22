@@ -1,7 +1,7 @@
 import landingPage from './components/landingPage.vue';
 import pacientRegister  from './components/pacientRegister.vue';
 import register from './components/register.vue'
-import doctorRegister from './components/doctorRegister.vue'
+import login from './components/login.vue'
 
 const routes = [
   {
@@ -15,9 +15,9 @@ const routes = [
     component: pacientRegister
   },
   {
-    path: '/doctor_register',
-    name: 'doctor_register',
-    component: doctorRegister
+    path: '/login',
+    name: 'login',
+    component: login
   },
   {
     path: '/register',
