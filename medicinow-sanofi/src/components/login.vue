@@ -16,22 +16,22 @@
                    <b-field label="Senha">
                        <b-input
                            type="password"
-                           password-reveal
                            placeholder="Sua senha"
-                           required>
+                           required
+                           password-reveal>
                        </b-input>
                    </b-field>
 
-                   <b-checkbox>Remember me</b-checkbox>
+                   <b-checkbox type="is-info">Lembrar senha</b-checkbox>
                </section>
                <footer class="modal-card-foot">
-                   <button class="button is-primary">Login</button>
+                 <div class="infoCentering">
+                   <b-button  v-on:click="validateBeforeSubmit"  size="is-deafult" type="is-info "  >Entrar</b-button>
+                 </div>
                </footer>
            </div>
          </form>
-      <b-field grouped position="is-centered">
-        <b-button  v-on:click="validateBeforeSubmit"  size="is-medium" type="is-info"  rounded >Finalizar Cadastro</b-button>
-      </b-field>
+
       <div>
         <p>{{pacient}}</p>
       </div>
@@ -111,5 +111,8 @@ export default {
 .backgroundPainting {
   background-color: #7ea2d9;
   height:950px;
+}
+.infoCentering{
+  padding-left: 85px;
 }
 </style>
