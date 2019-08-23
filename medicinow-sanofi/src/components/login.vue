@@ -5,16 +5,28 @@
         <form action="">
            <div class="modal-card" style="width:300px;">
                <section class="modal-card-body">
-                   <b-field label="Email">
+                   <b-field
+                   label="Email"
+                   :type="{'is-danger': errors.has('email')}"
+                   :message="{'Email inválido' : errors.firstByRule('email', 'required')}">
                        <b-input
-                           type="email"
-                           placeholder="Seu email"
-                           required>
+                         v-model="email"
+                         name="email"
+                         v-validate="'required'"
+                         type="email"
+                         placeholder="Seu email"
+                         required>
                        </b-input>
                    </b-field>
 
-                   <b-field label="Senha">
+                   <b-field
+                     label="Senha"
+                     :type="{'is-danger': errors.has('password')}"
+                     :message="{'Senha inválida' : errors.firstByRule('password', 'required')}">
                        <b-input
+                         v-model="password"
+                         name="password"
+                         v-validate="'required|min:8'"
                            type="password"
                            password-reveal
                            placeholder="Sua senha"
