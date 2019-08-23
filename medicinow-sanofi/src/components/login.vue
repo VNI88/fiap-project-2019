@@ -1,7 +1,7 @@
 <template>
   <section class="backgroundPainting">
     <p class="header">MediciNOW</p>
-    <div class="container ">
+    <div class="container">
         <form>
            <div class="modal-card" style="width:300px;">
                <section class="modal-card-body">
