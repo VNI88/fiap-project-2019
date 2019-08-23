@@ -2,7 +2,7 @@
   <section class="backgroundPainting">
     <p class="header">MediciNOW</p>
     <div class="container ">
-        <form action="">
+        <form>
            <div class="modal-card" style="width:300px;">
                <section class="modal-card-body">
                    <b-field label="Email">
@@ -113,6 +113,6 @@ export default {
   height:950px;
 }
 .infoCentering{
-  padding-left: 85px;
+  padding-left: 88px;
 }
 </style>
