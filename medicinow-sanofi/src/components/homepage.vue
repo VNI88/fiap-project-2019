@@ -49,37 +49,54 @@
         </b-navbar-item>
       </template>
     </b-navbar>
-    <b-field grouped style="padding-top: 40px; padding-bottom: 40px;" aria-controls="contentIdForA11y1" slot="trigger" >
-      <b-autocomplete
-       style="padding-left: 10px;"
-       v-model="name"
-       :data="filteredDataArray"
-       placeholder="Pesquisar especialidade..."
-       expanded
-       @select="option => selected = option"
-       >
-       <template slot="empty">Especialidade não encontrada</template>
-      </b-autocomplete>
-      <button class="button is-info" style="padding-right:10px;">Buscar </button>
-    </b-field>
 
-    <b-field grouped v-if = "selected != null">
-      <b-field expanded style="padding-left: 10px;">
-        <b-datepicker
-          :show-week-number="showWeekNumber"
-          placeholder="Clique para selecionar a data"
-          >
-          </b-datepicker>
-      </b-field>
+    <b-steps v-model="activeStep" :animated="isAnimated" type="is-info" :has-navigation="false">
+      <b-step-item label="Especialidade" :clickable="isStepsClickable">
+        <b-field grouped style="padding-top: 40px; padding-bottom: 40px;" >
+          <b-autocomplete
+           style="padding-left: 10px;"
+           v-model="name"
+           :data="filteredDataArray"
+           placeholder="Pesquisar especialidade..."
+           expanded
+           @select="option => selected = option"
+           >
+           <template slot="empty">Especialidade não encontrada</template>
+          </b-autocomplete>
+          <button class="button is-info" style="padding-right:10px;">Buscar </button>
+        </b-field>
 
-      <b-field style="padding-right: 10px;" expanded>
-        <b-timepicker
-            placeholder="Clique para selecionar a hora"
-            :enable-seconds="enableSeconds"
-            :hour-format="format">
-        </b-timepicker>
-      </b-field>
-    </b-field>
+        <b-field grouped v-if = "selected != null">
+          <b-field expanded style="padding-left: 10px;">
+            <b-datepicker
+              :show-week-number="showWeekNumber"
+              placeholder="Clique para selecionar a data"
+              >
+            </b-datepicker>
+          </b-field>
+
+          <b-field style="padding-right: 10px;" expanded>
+            <b-timepicker
+                placeholder="Clique para selecionar a hora"
+                :enable-seconds="enableSeconds"
+                :hour-format="format">
+            </b-timepicker>
+          </b-field>
+        </b-field>
+      </b-step-item>
+
+      <b-step-item label="Médico" :clickable="isStepsClickable" type="is-info">
+          Lorem ipsum dolor sit amet.<br>
+          Lorem ipsum dolor sit amet.
+      </b-step-item>
+
+      <b-step-item label="Revisão" :clickable="isStepsClickable" >
+          Lorem ipsum dolor sit amet.<br>
+          Lorem ipsum dolor sit amet.<br>
+          Lorem ipsum dolor sit amet.<br>
+          Lorem ipsum dolor sit amet.
+      </b-step-item>
+    </b-steps>
   </section>
 </template>
 
@@ -111,7 +128,10 @@ export default {
       selected: null,
       showWeekNumber: false,
       formatAmPm: false,
-      enableSeconds: false
+      enableSeconds: false,
+      activeStep: 0,
+      isAnimated: true,
+      isStepsClickable: true,
     }
   },
 computed: {
