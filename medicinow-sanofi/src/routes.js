@@ -1,5 +1,5 @@
 import landingPage from './components/landingPage.vue';
-import pacientRegister  from './components/pacientRegister.vue';
+import homepage  from './components/homepage.vue';
 import register from './components/register.vue'
 import login from './components/login.vue'
 
@@ -10,9 +10,9 @@ const routes = [
     component: landingPage
   },
   {
-    path: '/pacient_register',
-    name: 'pacient_register',
-    component: pacientRegister
+    path: '/homepage',
+    name: 'homepage',
+    component: homepage
   },
   {
     path: '/login',

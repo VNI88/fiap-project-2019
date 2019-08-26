@@ -152,7 +152,7 @@ export default {
           console.log(this.crm);
           if (this.crm){
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
-            axios.post( proxyurl+'https://obscure-woodland-55617.herokuapp.com/api/v1/doctors', {
+            axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
               first_name: this.first_name,
               last_name: this.last_name,
               telephone: this.telephone,
@@ -176,7 +176,7 @@ export default {
           }
           else{
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
-            axios.post( proxyurl+'https://obscure-woodland-55617.herokuapp.com/api/v1/pacients', {
+            axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/pacients', {
               first_name: this.first_name,
               last_name: this.last_name,
               telephone: this.telephone,

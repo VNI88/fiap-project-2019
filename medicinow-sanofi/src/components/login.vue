@@ -1,59 +1,55 @@
 <template>
   <section class="backgroundPainting">
-    <p class="header">MediciNOW</p>
-    <div class="container">
-        <form>
-           <div class="modal-card" style="width:300px;">
-               <section class="modal-card-body">
-                   <b-field
-                   label="Email"
-                   :type="{'is-danger': errors.has('email')}"
-                   :message="{'Email inválido' : errors.firstByRule('email', 'required')}">
-                       <b-input
-                         v-model="email"
-                         name="email"
-                         v-validate="'required'"
-                         type="email"
-                         placeholder="Seu email"
-                         required>
-                       </b-input>
-                   </b-field>
+    <div style="align-items: center">
+      <p class="header">MediciNOW</p>
 
-                   <b-field
-                     label="Senha"
-                     :type="{'is-danger': errors.has('password')}"
-                     :message="{'Senha inválida' : errors.firstByRule('password', 'required')}">
-                       <b-input
-                         v-model="password"
-                         name="password"
-                         v-validate="'required|min:8'"
-                           type="password"
-                           placeholder="Sua senha"
-                           required
-                           password-reveal>
-                       </b-input>
-                   </b-field>
+      <form >
+        <div class="modal-card" style="width:300px;">
+          <section class="modal-card-body">
+            <b-field
+            label="Email"
+            :type="{'is-danger': errors.has('email')}"
+            :message="{'Email inválido' : errors.firstByRule('email', 'required')}">
+              <b-input
+              v-model="email"
+              name="email"
+              v-validate="'required'"
+              type="email"
+              placeholder="Seu email"
+              required>
+              </b-input>
+            </b-field>
 
-                   <b-checkbox type="is-info">Lembrar senha</b-checkbox>
-               </section>
-               <footer class="modal-card-foot">
-                 <div class="infoCentering">
-                   <b-button  v-on:click="validateBeforeSubmit"  size="is-deafult" type="is-info "  >Entrar</b-button>
-                 </div>
-               </footer>
-           </div>
-         </form>
+            <b-field
+             label="Senha"
+             :type="{'is-danger': errors.has('password')}"
+             :message="{'Senha inválida' : errors.firstByRule('password', 'required')}">
+              <b-input
+              v-model="password"
+              name="password"
+              v-validate="'required|min:8'"
+              type="password"
+              password-reveal
+              placeholder="Sua senha"
+              required>
+              </b-input>
+            </b-field>
+
+            <b-checkbox>Lembrar senha</b-checkbox>
+          </section>
+          <footer class="modal-card-foot">
+            <div class="buttonPosition">
+              <b-button  v-on:click="validateBeforeSubmit"  size="is-medium" type="is-info"  rounded >Login</b-button>
+            </div>
+          </footer>
+        </div>
+      </form>
 
       <div>
-        <p>{{pacient}}</p>
+        <p>{{user}}</p>
       </div>
-  </div>
-
+    </div>
   </section>
-
-
-
-
 </template>
 
 <script>
@@ -62,18 +58,15 @@ import VeeValidate from 'vee-validate';
 import axios from 'axios';
 
 Vue.use(VeeValidate, {
-    events: ''
+  events: ''
 })
 
 export default {
   data() {
     return {
-      firstname: null,
-      lastname: null,
       email: null,
       password: null,
-      flagTerms: false,
-      pacient:{}
+      user:{}
     }
   },
 
@@ -82,18 +75,27 @@ export default {
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-
-
-          axios.post('https://obscure-woodland-55617.herokuapp.com/api/v1/pacients')
-            .then((response) =>{
-            console.log(response.data);
-            this.pacient = response.data;
+          console.log("Tô aqui")
+          const proxyurl = "https://cors-anywhere.herokuapp.com/";
+          axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/sign_in', {
+            email: this.email,
+            password: this.password
+          },{
+            headers: {
+              'Access-Control-Allow-Credentials' : true,
+              'Access-Control-Allow-Methods':'*',
+              'Access-Control-Allow-Headers':'*',
+            }
+          })
+          .then((response) =>{
+            console.log(response);
+             this.user = response.data
+             window.location.href = "http://localhost:8080/#/login";
+             window.location.replace("http://localhost:8080/#/register")
           })
           .catch((error) => {
             console.log(error);
           });
-
-          return;
         }
         else{
           this.$buefy.toast.open({
@@ -124,7 +126,7 @@ export default {
   background-color: #7ea2d9;
   height:950px;
 }
-.infoCentering{
-  padding-left: 88px;
+.buttonPosition {
+  padding-left: 80px;
 }
 </style>
