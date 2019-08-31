@@ -48,6 +48,13 @@
           </b-dropdown>
         </b-navbar-item>
       </template>
+      <template slot="end">
+        <b-navbar-item >
+
+            <p> {{submitedEmail}}</p>
+
+        </b-navbar-item>
+      </template>
     </b-navbar>
 
     <b-steps v-model="activeStep" :animated="isAnimated" type="is-info" :has-navigation="false">
@@ -86,12 +93,15 @@
       </b-step-item>
 
       <b-step-item label="Médico" :clickable="isStepsClickable" type="is-info">
-          Lorem ipsum dolor sit amet.<br>
-          Lorem ipsum dolor sit amet.
+        <div class="modal-card" style=" margin-top: 40px; width:700px; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue;">
+          <section class="modal-card-body">
+            <p>{{medicalAgreements}}</p>
+          </section>
+        </div>
       </b-step-item>
 
       <b-step-item label="Revisão" :clickable="isStepsClickable" >
-          Lorem ipsum dolor sit amet.<br>
+          <button class="button is-info" v-on:click="logout" style="padding-right:10px;">Buscar </button>
           Lorem ipsum dolor sit amet.<br>
           Lorem ipsum dolor sit amet.<br>
           Lorem ipsum dolor sit amet.
@@ -110,6 +120,19 @@ Vue.use(VeeValidate, {
 })
 
 export default {
+  beforeCreate: function () {
+    if (!this.$session.exists()) {
+      this.$router.push('/')
+    }
+  },
+
+  methods: {
+    logout: function () {
+      this.$session.destroy()
+      this.$router.push('/')
+    }
+  },
+
   data() {
    return {
      data: [
@@ -132,8 +155,11 @@ export default {
       activeStep: 0,
       isAnimated: true,
       isStepsClickable: true,
+      medicalAgreements: null,
+      submitedEmail: null
     }
   },
+
 computed: {
    filteredDataArray() {
      return this.data.filter((option) => {
@@ -146,6 +172,26 @@ computed: {
    format() {
             return this.formatAmPm ? '12' : '24'
     }
+  },
+
+  mounted() {
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    axios.get( proxyurl+'https://mednow.herokuapp.com/api/v1/medical_agreements', {
+
+  },{
+    headers: {
+      'Access-Control-Allow-Credentials' : true,
+      'Access-Control-Allow-Methods':'*',
+      'Access-Control-Allow-Headers':'*',
+      }
+  })
+      .then((response) =>{
+      console.log(response);
+      return this.medicalAgreements = response.data.status
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 }
 </script>

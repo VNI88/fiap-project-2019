@@ -44,10 +44,6 @@
           </footer>
         </div>
       </form>
-
-      <div>
-        <p>{{user}}</p>
-      </div>
     </div>
   </section>
 </template>
@@ -56,26 +52,23 @@
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 import axios from 'axios';
-
+import VueSession from 'vue-session'
 Vue.use(VeeValidate, {
   events: ''
 })
-
+ Vue.use(VueSession)
 export default {
   data() {
     return {
       email: null,
       password: null,
-      user:{}
+      userToken:null,
     }
   },
-
-  methods: {
-
+methods: {
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          console.log("Tô aqui")
           const proxyurl = "https://cors-anywhere.herokuapp.com/";
           axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/sign_in', {
             email: this.email,
@@ -88,10 +81,17 @@ export default {
             }
           })
           .then((response) =>{
-            console.log(response);
-             this.user = response.data
-             window.location.href = "http://localhost:8080/#/login";
-             window.location.replace("http://localhost:8080/#/register")
+            console.log(response)
+            console.log(response.headers)
+            if (response.data.status === 'success' && response.data.token) {
+              this.$session.start()
+              this.$session.set('jwt', response.data.token)
+              response.headers.Authorization = 'Bearer ' + response.data.token
+              window.location.href = "http://localhost:8080/#/homepage"
+              this.$router.push('/homepage')
+            }
+            // userToken: response.data.token
+            // window.location.href = "http://localhost:8080/#/homepage"
           })
           .catch((error) => {
             console.log(error);
@@ -109,8 +109,7 @@ export default {
       });
     }
   }
-
-}
+  }
 </script>
 
 

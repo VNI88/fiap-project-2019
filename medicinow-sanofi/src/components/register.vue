@@ -149,7 +149,6 @@ export default {
             type: 'is-success',
             position: 'is-bottom'
           })
-          console.log(this.crm);
           if (this.crm){
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
             axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
