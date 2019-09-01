@@ -95,6 +95,15 @@
                 size="is-medium"
                 placeholder="Insira o seu CRM"></b-input>
               </b-field>
+
+              <b-field label="Especialidade">
+                <b-input
+                v-model="speciality"
+                name="speciality"
+
+                size="is-medium"
+                placeholder="Insira a sua Especialidade"></b-input>
+              </b-field>
             </b-collapse>
           </div>
 
@@ -137,7 +146,8 @@ export default {
       password: null,
       flagTerms: false,
       pacient: null,
-      crm: null
+      crm: null,
+      speciality: null
     }
   },
   methods: {
@@ -157,7 +167,8 @@ export default {
               telephone: this.telephone,
               email: this.email,
               password: this.password,
-              crm: this.crm
+              crm: this.crm,
+              speciality: this.speciality
           },{
             headers: {
               'Access-Control-Allow-Credentials' : true,

@@ -44,7 +44,7 @@
 
             <hr class="dropdown-divider">
 
-            <b-dropdown-item aria-role="listitem">Sair</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem" v-on:click="logout">Sair</b-dropdown-item>
           </b-dropdown>
         </b-navbar-item>
       </template>
@@ -70,12 +70,13 @@
            >
            <template slot="empty">Especialidade não encontrada</template>
           </b-autocomplete>
-          <button class="button is-info" style="padding-right:10px;">Buscar </button>
+          <button class="button is-info" style="padding-right:10px;" v-on:click="validateFields">Buscar</button>
         </b-field>
 
         <b-field grouped v-if = "selected != null">
           <b-field expanded style="padding-left: 10px;">
             <b-datepicker
+              v-model="date"
               :show-week-number="showWeekNumber"
               placeholder="Clique para selecionar a data"
               >
@@ -84,27 +85,55 @@
 
           <b-field style="padding-right: 10px;" expanded>
             <b-timepicker
+                v-model="hour"
                 placeholder="Clique para selecionar a hora"
                 :enable-seconds="enableSeconds"
-                :hour-format="format">
+                :hour-format="format" >
             </b-timepicker>
           </b-field>
         </b-field>
       </b-step-item>
 
-      <b-step-item label="Médico" :clickable="isStepsClickable" type="is-info">
-        <div class="modal-card" style=" margin-top: 40px; width:700px; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue;">
-          <section class="modal-card-body">
-            <p>{{medicalAgreements}}</p>
-          </section>
+      <b-step-item label="Médico"  :clickable="isStepsClickable" type="is-info" v-if="visible===true">
+
+        <div v-for="medicalAgreement in medicalAgreements" class="modal-card" style=" margin-top: 40px; width:700px; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue; ">
+          <b-button v-on:click="setFields(medicalAgreement)">
+          <!-- <section class="modal-card-body" role="button"> -->
+            <p >{{medicalAgreement.plan}} {{medicalAgreement.brand}}</p>
+
+
+          <!-- </section> -->
+        </b-button>
+
         </div>
+
+
       </b-step-item>
 
-      <b-step-item label="Revisão" :clickable="isStepsClickable" >
-          <button class="button is-info" v-on:click="logout" style="padding-right:10px;">Buscar </button>
-          Lorem ipsum dolor sit amet.<br>
-          Lorem ipsum dolor sit amet.<br>
-          Lorem ipsum dolor sit amet.
+      <b-step-item label="Revisão" :clickable="isStepsClickable" v-if="visible===true" >
+        <div class="container ">
+          <div class="notification" style="padding: 20px">
+            <p>
+              {{chosenDoctor}}
+            </p>
+          </div>
+          <b-field grouped position="is-centered">
+          <b-button size="is-medium" type="is-info" v-on:click="postAppointment">Marcar Consulta</b-button>
+          <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
+            <div class="card" style="border-radius: 10px; ">
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content" style="text-align: center;">
+                          <img src="../assets/green_check.png" alt="Image" style="height:100px;">
+
+                            <p class="title is-4">Sua consulta foi marcada com sucesso!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
+        </b-field>
+          </div>
       </b-step-item>
     </b-steps>
   </section>
@@ -130,6 +159,75 @@ export default {
     logout: function () {
       this.$session.destroy()
       this.$router.push('/')
+    },
+
+    postAppointment: function() {
+
+      const proxyurl = "https://cors-anywhere.herokuapp.com/";
+      axios.get( proxyurl+'https://mednow.herokuapp.com/api/v1/medical_agreements', {
+
+      },{
+        headers: {
+          'Access-Control-Allow-Credentials' : true,
+          'Access-Control-Allow-Methods':'*',
+          'Access-Control-Allow-Headers':'*',
+        }
+      })
+      .then((response) =>{
+        console.log(response);
+         return this.isCardModalActive = true
+        }
+      )
+      .catch((error) => {
+        console.log(error);
+      });
+    },
+
+    scroll () {
+      window.onscroll = () => {
+        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
+
+        if (bottomOfWindow) {
+        };
+      }
+    },
+
+    open() {
+        const loadingComponent = this.$buefy.loading.open({
+            container: this.isFullPage ? null : this.$refs.element.$el
+        })
+        setTimeout(() => loadingComponent.close(), 3 * 1000)
+    },
+
+    setFields: function(item) {
+      console.log(item)
+      this.chosenDoctor = item
+    },
+
+    validateFields: function () {
+      if(this.date != null && this.hour != null){
+       this.isStepsClickable = true
+
+       const proxyurl = "https://cors-anywhere.herokuapp.com/";
+       axios.get( proxyurl+'https://mednow.herokuapp.com/api/v1/medical_agreements', {
+
+       },{
+         headers: {
+           'Access-Control-Allow-Credentials' : true,
+           'Access-Control-Allow-Methods':'*',
+           'Access-Control-Allow-Headers':'*',
+         }
+       })
+       .then((response) =>{
+         console.log(response);
+          this.medicalAgreements = response.data.data
+         }
+       )
+       .catch((error) => {
+         console.log(error);
+       });
+       return this.visible = true
+      }
     }
   },
 
@@ -154,9 +252,15 @@ export default {
       enableSeconds: false,
       activeStep: 0,
       isAnimated: true,
-      isStepsClickable: true,
+      isStepsClickable: false,
       medicalAgreements: null,
-      submitedEmail: null
+      submitedEmail: null,
+      date: null,
+      hour: null,
+      visible: false,
+      isFullPage:true,
+      chosenDoctor: 'Você não selecionou a sua consulta.Por gentileza, volte para a etapa anterior.',
+      isCardModalActive: false
     }
   },
 
@@ -174,24 +278,12 @@ computed: {
     }
   },
 
-  mounted() {
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    axios.get( proxyurl+'https://mednow.herokuapp.com/api/v1/medical_agreements', {
 
-  },{
-    headers: {
-      'Access-Control-Allow-Credentials' : true,
-      'Access-Control-Allow-Methods':'*',
-      'Access-Control-Allow-Headers':'*',
-      }
-  })
-      .then((response) =>{
-      console.log(response);
-      return this.medicalAgreements = response.data.status
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  mounted() {
+
+    this.scroll();
+
+
   }
 }
 </script>

@@ -2,7 +2,6 @@
   <section class="backgroundPainting">
     <div style="align-items: center">
       <p class="header">MediciNOW</p>
-
       <form >
         <div class="modal-card" style="width:300px;">
           <section class="modal-card-body">
@@ -36,6 +35,7 @@
             </b-field>
 
             <b-checkbox>Lembrar senha</b-checkbox>
+            <p>Não possui cadastro?<a href="#/register" type="is-info"> Clique aqui</a></p>
           </section>
           <footer class="modal-card-foot">
             <div class="buttonPosition">
@@ -81,8 +81,6 @@ methods: {
             }
           })
           .then((response) =>{
-            console.log(response)
-            console.log(response.headers)
             if (response.data.status === 'success' && response.data.token) {
               this.$session.start()
               this.$session.set('jwt', response.data.token)
@@ -90,8 +88,6 @@ methods: {
               window.location.href = "http://localhost:8080/#/homepage"
               this.$router.push('/homepage')
             }
-            // userToken: response.data.token
-            // window.location.href = "http://localhost:8080/#/homepage"
           })
           .catch((error) => {
             console.log(error);
