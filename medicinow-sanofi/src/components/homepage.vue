@@ -49,10 +49,11 @@
         </b-navbar-item>
       </template>
       <template slot="end">
-        <b-navbar-item >
-
-            <p> {{submitedEmail}}</p>
-
+          <b-navbar-item >
+            <p style="fontWeight: bold; color:#4287f5;">Paciente,</p>
+            </b-navbar-item>
+        <b-navbar-item  style="width:auto;">
+            <p> {{submitedName}}</p>
         </b-navbar-item>
       </template>
     </b-navbar>
@@ -76,6 +77,7 @@
         <b-field grouped v-if = "selected != null">
           <b-field expanded style="padding-left: 10px;">
             <b-datepicker
+              name="date"
               v-model="date"
               :show-week-number="showWeekNumber"
               placeholder="Clique para selecionar a data"
@@ -85,6 +87,7 @@
 
           <b-field style="padding-right: 10px;" expanded>
             <b-timepicker
+                name="hour"
                 v-model="hour"
                 placeholder="Clique para selecionar a hora"
                 :enable-seconds="enableSeconds"
@@ -96,10 +99,12 @@
 
       <b-step-item label="Médico"  :clickable="isStepsClickable" type="is-info" v-if="visible===true">
 
-        <div v-for="medicalAgreement in medicalAgreements" class="modal-card" style=" margin-top: 40px; width:700px; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue; ">
-          <b-button v-on:click="setFields(medicalAgreement)">
+        <div v-for="doctor in doctors" class="modal-card" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue; ">
+          <b-button v-on:click="setFields(doctor)">
           <!-- <section class="modal-card-body" role="button"> -->
-            <p >{{medicalAgreement.plan}} {{medicalAgreement.brand}}</p>
+            <p >{{doctor.first_name}} {{doctor.last_name}}<br>
+                <!-- {{doctor.speciality}} <br> -->
+            </p>
 
 
           <!-- </section> -->
@@ -113,8 +118,9 @@
       <b-step-item label="Revisão" :clickable="isStepsClickable" v-if="visible===true" >
         <div class="container ">
           <div class="notification" style="padding: 20px">
-            <p>
-              {{chosenDoctor}}
+            <p v-if="this.chosenDoctor != null">
+              <p style="fontWeight: bold;">Doutor Escolhido:</p>
+              {{chosenDoctor.first_name}} {{chosenDoctor.last_name}}
             </p>
           </div>
           <b-field grouped position="is-centered">
@@ -125,7 +131,6 @@
                     <div class="media">
                         <div class="media-content" style="text-align: center;">
                           <img src="../assets/green_check.png" alt="Image" style="height:100px;">
-
                             <p class="title is-4">Sua consulta foi marcada com sucesso!</p>
                         </div>
                     </div>
@@ -143,12 +148,69 @@
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 import axios from 'axios';
+import VueSession from 'vue-session';
 
 Vue.use(VeeValidate, {
   events: ''
 })
+let dateFormatter = new Date()
+ Vue.use(VueSession)
 
 export default {
+  data() {
+   return {
+     data: [
+       'Endócrinologia',
+       'Pediatria',
+       'Ortopedia',
+       'Urologia',
+       'Nutrição',
+       'Oftalmologia',
+       'Dermatologia',
+       'Mastologia',
+       'Nefrologia',
+       'Hematologia',
+      ],
+      name: '',
+      selected: null,
+      showWeekNumber: false,
+      formatAmPm: false,
+      enableSeconds: false,
+      activeStep: 0,
+      isAnimated: true,
+      isStepsClickable: false,
+      doctors: null,
+      submitedName: null ,
+      date: null,
+      hour: null,
+      visible: false,
+      isFullPage:true,
+      chosenDoctor: 'Você não selecionou a sua consulta.Por gentileza, volte para a etapa anterior.',
+      isCardModalActive: false,
+      appointment_day: `${dateFormatter.getDate(this.date)}-${dateFormatter.getMonth(this.date)}-${dateFormatter.getFullYear(this.date)}`,
+      appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`
+    }
+  },
+
+  computed: {
+   filteredDataArray() {
+     return this.data.filter((option) => {
+       return option
+           .toString()
+           .toLowerCase()
+           .indexOf(this.name.toLowerCase()) >= 0
+     })
+   },
+   format() {
+            return this.formatAmPm ? '12' : '24'
+    }
+  },
+
+  mounted() {
+    this.scroll();
+    this.submitedName = this.$session.get('userName')
+  },
+
   beforeCreate: function () {
     if (!this.$session.exists()) {
       this.$router.push('/')
@@ -164,8 +226,12 @@ export default {
     postAppointment: function() {
 
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      axios.get( proxyurl+'https://mednow.herokuapp.com/api/v1/medical_agreements', {
-
+      axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/appointments', {
+        pacient_id: this.pacient_id,
+        doctor_id: this.doctor_id,
+        medical_agreement: this.medical_agreement,
+        appointment_day: this.date,
+        appointment_hour: this.hour
       },{
         headers: {
           'Access-Control-Allow-Credentials' : true,
@@ -179,7 +245,7 @@ export default {
         }
       )
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
       });
     },
 
@@ -207,9 +273,13 @@ export default {
     validateFields: function () {
       if(this.date != null && this.hour != null){
        this.isStepsClickable = true
+       // console.log(this.hour)
+
+       // console.log(`${date.getDate(this.date)}-${date.getMonth(this.date)}-${date.getFullYear(this.date)}`)
+       // console.log(`${date.getHours(this.hour)}:${date.getMinutes(this.hour)}`)
 
        const proxyurl = "https://cors-anywhere.herokuapp.com/";
-       axios.get( proxyurl+'https://mednow.herokuapp.com/api/v1/medical_agreements', {
+       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors/${this.appointment_day}/${this.appointment_hour}`, {
 
        },{
          headers: {
@@ -220,70 +290,16 @@ export default {
        })
        .then((response) =>{
          console.log(response);
-          this.medicalAgreements = response.data.data
-         }
-       )
+         this.doctors = response.data.data
+
+
+        })
        .catch((error) => {
-         console.log(error);
+         console.log(error.response);
        });
        return this.visible = true
       }
     }
-  },
-
-  data() {
-   return {
-     data: [
-       'Endócrinologia',
-       'Pediatria',
-       'Ortopedia',
-       'Urologia',
-       'Nutrição',
-       'Oftalmologia',
-       'Dermatologia',
-       'Mastologia',
-       'Nefrologia',
-       'Hematologia',
-      ],
-      name: '',
-      selected: null,
-      showWeekNumber: false,
-      formatAmPm: false,
-      enableSeconds: false,
-      activeStep: 0,
-      isAnimated: true,
-      isStepsClickable: false,
-      medicalAgreements: null,
-      submitedEmail: null,
-      date: null,
-      hour: null,
-      visible: false,
-      isFullPage:true,
-      chosenDoctor: 'Você não selecionou a sua consulta.Por gentileza, volte para a etapa anterior.',
-      isCardModalActive: false
-    }
-  },
-
-computed: {
-   filteredDataArray() {
-     return this.data.filter((option) => {
-       return option
-           .toString()
-           .toLowerCase()
-           .indexOf(this.name.toLowerCase()) >= 0
-     })
-   },
-   format() {
-            return this.formatAmPm ? '12' : '24'
-    }
-  },
-
-
-  mounted() {
-
-    this.scroll();
-
-
   }
 }
 </script>

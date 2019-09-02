@@ -131,10 +131,13 @@
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 import axios from 'axios';
+import VueSession from 'vue-session'
 
 Vue.use(VeeValidate, {
     events: ''
 })
+
+ Vue.use(VueSession)
 
 export default {
   data() {
@@ -147,28 +150,28 @@ export default {
       flagTerms: false,
       pacient: null,
       crm: null,
-      speciality: null
+      speciality: null,
+      doctor: null
     }
   },
+
   methods: {
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-          this.$buefy.toast.open({
-            message: 'Cadastro realizado com sucesso!',
-            type: 'is-success',
-            position: 'is-bottom'
-          })
+
           if (this.crm){
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
             axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
-              first_name: this.first_name,
               last_name: this.last_name,
+              first_name: this.first_name,
               telephone: this.telephone,
               email: this.email,
               password: this.password,
               crm: this.crm,
               speciality: this.speciality
+
+
           },{
             headers: {
               'Access-Control-Allow-Credentials' : true,
@@ -178,10 +181,12 @@ export default {
           })
               .then((response) =>{
               console.log(response);
-              return this.pacient = response.data
+              this.doctor = response.data
+              return window.location.href = "/login";
+              // this.$router.push('/login')
             })
             .catch((error) => {
-              console.log(error);
+              console.log(error.response);
             });
           }
           else{
@@ -202,17 +207,25 @@ export default {
           })
               .then((response) =>{
               console.log(response);
-              return this.pacient = response.data
+               this.pacient = response.data
+              return window.location.href = "/login";
+              // this.$router.push('/login')
             })
             .catch((error) => {
-              console.log(error);
+              console.log(error.response);
             });
           }
+
+          this.$buefy.toast.open({
+            message: 'Cadastro realizado com sucesso!',
+            type: 'is-success',
+            position: 'is-bottom'
+          })
 
         }
         else {
           this.$buefy.toast.open({
-            message: 'O formulário não é válido!Por favor verifique os campos.',
+            message: 'O formulário não é válido! Por favor verifique os campos.',
             type: 'is-danger',
             position: 'is-bottom'
           })

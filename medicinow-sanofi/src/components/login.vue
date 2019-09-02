@@ -1,10 +1,12 @@
 <template>
-  <section class="backgroundPainting">
+  <section class="backgroundLoginImage">
     <div style="align-items: center">
       <p class="header">MediciNOW</p>
       <form >
-        <div class="modal-card" style="width:300px;">
-          <section class="modal-card-body">
+        <div style="display: flex;">
+          <div style="width: 17px;"></div>
+        <div class="modal-card" style="width:auto;">
+          <section class="modal-card-body" style=": center">
             <b-field
             label="Email"
             :type="{'is-danger': errors.has('email')}"
@@ -43,9 +45,12 @@
             </div>
           </footer>
         </div>
+        <div style="width: 10px;"></div>
+      </div>
       </form>
-    </div>
+      </div>
   </section>
+
 </template>
 
 <script>
@@ -53,9 +58,11 @@ import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 import axios from 'axios';
 import VueSession from 'vue-session'
+
 Vue.use(VeeValidate, {
   events: ''
 })
+
  Vue.use(VueSession)
 export default {
   data() {
@@ -81,16 +88,18 @@ methods: {
             }
           })
           .then((response) =>{
+
             if (response.data.status === 'success' && response.data.token) {
               this.$session.start()
               this.$session.set('jwt', response.data.token)
+              this.$session.set('userName', response.data.name)
+              console.log(this.$session.get('userName'))
               response.headers.Authorization = 'Bearer ' + response.data.token
-              window.location.href = "http://localhost:8080/#/homepage"
               this.$router.push('/homepage')
             }
           })
           .catch((error) => {
-            console.log(error);
+            console.log(error.response);
           });
         }
         else{
@@ -117,9 +126,9 @@ methods: {
   font-weight: bold;
   color:#f0f2f5;
 }
-.backgroundPainting {
-  background-color: #7ea2d9;
-  height:950px;
+.backgroundLoginImage {
+  background-image: url("../assets/med_now_back.jpeg");
+  height:800px;
 }
 .buttonPosition {
   padding-left: 80px;
