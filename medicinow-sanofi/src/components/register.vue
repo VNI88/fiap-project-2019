@@ -38,7 +38,7 @@
               <b-input
                v-model="telephone"
                name="telephone"
-               v-validate="'required|max:12'"
+               v-validate="'required|min:10|max:12'"
                size="is-medium"
                maxlength="12"
                placeholder="Insira um telefone para contato aqui - Exemplo: (11)984676554"></b-input>
