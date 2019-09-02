@@ -120,9 +120,6 @@
       <b-field grouped position="is-centered">
         <b-button  v-on:click="validateBeforeSubmit"  size="is-medium" type="is-info"  rounded >Finalizar Cadastro</b-button>
       </b-field>
-      <div>''
-        <p>{{pacient}}</p>
-      </div>
     </div>
   </section>
 </template>
@@ -182,7 +179,7 @@ export default {
               .then((response) =>{
               console.log(response);
               this.doctor = response.data
-              return this.$router.push('#/login')
+              return this.$router.push('/')
             })
             .catch((error) => {
               console.log(error.response);
@@ -214,7 +211,13 @@ export default {
               console.log(response);
                this.pacient = response.data
                // window.location.href = "/login";
-              return this.$router.push('#/login')
+
+               this.$buefy.toast.open({
+                 message: 'Cadastro realizado com sucesso!',
+                 type: 'is-success',
+                 position: 'is-bottom'
+               })
+              return this.$router.push('/')
             })
             .catch((error) => {
               console.log(error.response);
@@ -226,13 +229,6 @@ export default {
               })
             });
           }
-
-          this.$buefy.toast.open({
-            message: 'Cadastro realizado com sucesso!',
-            type: 'is-success',
-            position: 'is-bottom'
-          })
-
         }
         else {
           this.$buefy.toast.open({
