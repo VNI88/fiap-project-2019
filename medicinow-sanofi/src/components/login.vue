@@ -100,6 +100,11 @@ methods: {
           })
           .catch((error) => {
             console.log(error.response);
+            this.$buefy.toast.open({
+              message: 'Por gentileza, tente novamente.',
+              type: 'is-danger',
+              position: 'is-bottom'
+            })
           });
         }
         else{

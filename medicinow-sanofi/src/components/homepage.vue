@@ -213,14 +213,14 @@ export default {
 
   beforeCreate: function () {
     if (!this.$session.exists()) {
-      this.$router.push('/')
+      this.$router.push('#/login')
     }
   },
 
   methods: {
     logout: function () {
       this.$session.destroy()
-      this.$router.push('/')
+      this.$router.push('#/login')
     },
 
     postAppointment: function() {
@@ -273,10 +273,6 @@ export default {
     validateFields: function () {
       if(this.date != null && this.hour != null){
        this.isStepsClickable = true
-       // console.log(this.hour)
-
-       // console.log(`${date.getDate(this.date)}-${date.getMonth(this.date)}-${date.getFullYear(this.date)}`)
-       // console.log(`${date.getHours(this.hour)}:${date.getMinutes(this.hour)}`)
 
        const proxyurl = "https://cors-anywhere.herokuapp.com/";
        axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors/${this.appointment_day}/${this.appointment_hour}`, {

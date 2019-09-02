@@ -5,19 +5,19 @@ import login from './components/login.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: landingPage
+    path: '/login',
+    name: 'login',
+    component: login
   },
+  // {
+  //   path: '/',
+  //   name: 'home',
+  //   component: landingPage
+  // },
   {
     path: '/homepage',
     name: 'homepage',
     component: homepage
-  },
-  {
-    path: '/login',
-    name: 'login',
-    component: login
   },
   {
     path: '/register',

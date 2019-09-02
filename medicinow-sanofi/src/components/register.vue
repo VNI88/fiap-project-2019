@@ -112,7 +112,7 @@
             :type="{'is-danger': errors.has('flag-terms')}"
             :message="{'Por favor marque a opção para prosseguir' : errors.firstByRule('flag-terms', 'required')}">
               <b-checkbox v-model="flagTerms" name="flag-terms" v-validate="'required:false'"  type="is-info">
-                Eu concordo com os termos e condições de uso
+                Li e concordo com os termos e condições de uso
               </b-checkbox>
           </b-field>
         </form>
@@ -120,7 +120,7 @@
       <b-field grouped position="is-centered">
         <b-button  v-on:click="validateBeforeSubmit"  size="is-medium" type="is-info"  rounded >Finalizar Cadastro</b-button>
       </b-field>
-      <div>
+      <div>''
         <p>{{pacient}}</p>
       </div>
     </div>
@@ -182,11 +182,16 @@ export default {
               .then((response) =>{
               console.log(response);
               this.doctor = response.data
-              return window.location.href = "/login";
-              // this.$router.push('/login')
+              return this.$router.push('#/login')
             })
             .catch((error) => {
               console.log(error.response);
+
+              this.$buefy.toast.open({
+                message: 'Por gentileza, tente novamente.',
+                type: 'is-danger',
+                position: 'is-bottom'
+              })
             });
           }
           else{
@@ -208,11 +213,17 @@ export default {
               .then((response) =>{
               console.log(response);
                this.pacient = response.data
-              return window.location.href = "/login";
-              // this.$router.push('/login')
+               // window.location.href = "/login";
+              return this.$router.push('#/login')
             })
             .catch((error) => {
               console.log(error.response);
+
+              this.$buefy.toast.open({
+                message: 'Por gentileza, tente novamente.',
+                type: 'is-danger',
+                position: 'is-bottom'
+              })
             });
           }
 
