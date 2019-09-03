@@ -81,6 +81,7 @@
               v-model="date"
               :show-week-number="showWeekNumber"
               placeholder="Clique para selecionar a data"
+              :min-date="minDate"
               >
             </b-datepicker>
           </b-field>
@@ -188,7 +189,8 @@ export default {
       chosenDoctor: 'Você não selecionou a sua consulta.Por gentileza, volte para a etapa anterior.',
       isCardModalActive: false,
       appointment_day: `${dateFormatter.getDate(this.date)}-${dateFormatter.getMonth(this.date)}-${dateFormatter.getFullYear(this.date)}`,
-      appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`
+      appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`,
+      minDate: new Date(dateFormatter.getFullYear(), dateFormatter.getMonth(), dateFormatter.getDate()),
     }
   },
 
@@ -224,7 +226,6 @@ export default {
     },
 
     postAppointment: function() {
-      console.log(this.appointment_day)
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
       axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/appointments', {
         pacient_id: this.$session.get('pacient_id'),
@@ -238,7 +239,7 @@ export default {
           'Access-Control-Allow-Methods':'*',
           'Access-Control-Allow-Headers':'*',
           'Authorization': "Bearer " + this.$session.get('token'),
-          "X-Requested-With": "XMLHttpRequest"  
+          "X-Requested-With": "XMLHttpRequest"
         }
       })
       .then((response) =>{
