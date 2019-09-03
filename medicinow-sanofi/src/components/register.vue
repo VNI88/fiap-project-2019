@@ -32,15 +32,16 @@
           </b-field>
 
           <b-field
+            :addons="false"
             label="Telefone"
             :type="{'is-danger': errors.has('telephone')}"
             :message="{'Telefone inválido' : errors.firstByRule('telephone', 'required')}">
               <b-input
                v-model="telephone"
                name="telephone"
-               v-validate="'required|min:10|max:12'"
+               v-validate="'required|min:10|max:13'"
                size="is-medium"
-               maxlength="12"
+               v-cleave="masks.custom"
                placeholder="Insira um telefone para contato aqui - Exemplo: (11)984676554"></b-input>
           </b-field>
 
@@ -128,7 +129,8 @@
 import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 import axios from 'axios';
-import VueSession from 'vue-session'
+import VueSession from 'vue-session';
+import Cleave from 'cleave.js';
 
 Vue.use(VeeValidate, {
     events: ''
@@ -136,7 +138,20 @@ Vue.use(VeeValidate, {
 
  Vue.use(VueSession)
 
+ const cleave = {
+    name: 'cleave',
+    bind(el, binding) {
+        const input = el.querySelector('input')
+        input._vCleave = new Cleave(input, binding.value)
+    },
+    unbind(el) {
+        const input = el.querySelector('input')
+        input._vCleave.destroy()
+    }
+  }
+
 export default {
+  directives: { cleave },
   data() {
     return {
       last_name: null,
@@ -148,7 +163,14 @@ export default {
       pacient: null,
       crm: null,
       speciality: null,
-      doctor: null
+      doctor: null,
+      masks: {
+        custom: {
+          delimiters: ['(', ')'],
+          blocks:[0, 2, 9],
+          numericOnly: true
+        }
+      }
     }
   },
 
@@ -162,7 +184,7 @@ export default {
             axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
               last_name: this.last_name,
               first_name: this.first_name,
-              telephone: this.telephone,
+              telephone: this.telephone.target._vCleave.getRawValue(),
               email: this.email,
               password: this.password,
               crm: this.crm,
@@ -178,6 +200,7 @@ export default {
           })
               .then((response) =>{
               console.log(response);
+              console.log(telephone);
               this.doctor = response.data
               return this.$router.push('/')
             })
