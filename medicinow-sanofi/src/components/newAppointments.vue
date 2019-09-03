@@ -2,12 +2,12 @@
   <section>
     <b-navbar>
       <template slot="brand">
-          <b-navbar-item href="/">
+          <b-navbar-item >
               <p style="font-weight: bold; color: #4287f5; font-size: 25px;">MediciNOW</p>
           </b-navbar-item>
       </template>
       <template slot="start">
-        <b-navbar-item href="#">
+        <b-navbar-item href="/new_appointments">
           <a
           class="navbar-item"
           role="button">
