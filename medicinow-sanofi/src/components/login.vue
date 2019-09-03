@@ -69,7 +69,6 @@ export default {
     return {
       email: null,
       password: null,
-      userToken:null,
     }
   },
 methods: {
@@ -88,14 +87,21 @@ methods: {
             }
           })
           .then((response) =>{
-
-            if (response.data.status === 'success' && response.data.token) {
+            if (response.data.status === 'success' && response.data.token && response.data.flag === 'pacient') {
               this.$session.start()
-              this.$session.set('jwt', response.data.token)
+              this.$session.set('token', response.data.token)
+              this.$session.set('userName', response.data.name)
+              this.$session.set('pacient_id', response.data.id)
+              response.headers.Authorization = 'Bearer ' + response.data.token
+              this.$router.push('/pacients_appointments')
+            }
+            else if  (response.data.status === 'success' && response.data.token && response.data.flag === 'doctor') {
+              this.$session.start()
+              this.$session.set('token', response.data.token)
               this.$session.set('userName', response.data.name)
               console.log(this.$session.get('userName'))
               response.headers.Authorization = 'Bearer ' + response.data.token
-              this.$router.push('/homepage')
+              this.$router.push('/doctor_appointments')
             }
           })
           .catch((error) => {
@@ -119,7 +125,7 @@ methods: {
       });
     }
   }
-  }
+}
 </script>
 
 

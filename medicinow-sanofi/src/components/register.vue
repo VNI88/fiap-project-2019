@@ -42,6 +42,7 @@
                v-validate="'required|min:10|max:13'"
                size="is-medium"
                v-cleave="masks.custom"
+               @input.native="onInput"
                placeholder="Insira um telefone para contato aqui - Exemplo: (11)984676554"></b-input>
           </b-field>
 
@@ -175,16 +176,19 @@ export default {
   },
 
   methods: {
+    onInput(event) {
+      this.telephone = event.target._vCleave.getRawValue()
+    },
+
     validateBeforeSubmit() {
       this.$validator.validateAll().then((result) => {
         if (result) {
-
           if (this.crm){
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
-            axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
+             axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
               last_name: this.last_name,
               first_name: this.first_name,
-              telephone: this.telephone.target._vCleave.getRawValue(),
+              telephone:  this.telephone,
               email: this.email,
               password: this.password,
               crm: this.crm,
@@ -200,8 +204,14 @@ export default {
           })
               .then((response) =>{
               console.log(response);
-              console.log(telephone);
               this.doctor = response.data
+
+              this.$buefy.toast.open({
+                message: 'Cadastro realizado com sucesso!',
+                type: 'is-success',
+                position: 'is-bottom'
+              })
+
               return this.$router.push('/')
             })
             .catch((error) => {
