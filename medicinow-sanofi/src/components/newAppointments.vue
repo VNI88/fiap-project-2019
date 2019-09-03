@@ -224,7 +224,7 @@ export default {
     },
 
     postAppointment: function() {
-      console.log(this.$session.get('token'))
+      console.log(this.appointment_day)
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
       axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/appointments', {
         pacient_id: this.$session.get('pacient_id'),
@@ -237,7 +237,8 @@ export default {
           'Access-Control-Allow-Credentials' : true,
           'Access-Control-Allow-Methods':'*',
           'Access-Control-Allow-Headers':'*',
-          'Authorization': "Bearer " + this.$session.get('token')
+          'Authorization': "Bearer " + this.$session.get('token'),
+          "X-Requested-With": "XMLHttpRequest"  
         }
       })
       .then((response) =>{
