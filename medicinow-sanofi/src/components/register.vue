@@ -114,8 +114,13 @@
             :type="{'is-danger': errors.has('flag-terms')}"
             :message="{'Por favor marque a opção para prosseguir' : errors.firstByRule('flag-terms', 'required')}">
               <b-checkbox v-model="flagTerms" name="flag-terms" v-validate="'required:false'"  type="is-info">
-                Li e concordo com os termos e condições de uso
+                Li e concordo com os <a @click="isCardModalActive = true">termos e condições de uso</a>
               </b-checkbox>
+              <b-modal :active.sync="isCardModalActive"  >
+                <div style="width: auto">
+                  <iframe  style="width:1000px; height: 500px" src="https://docs.google.com/document/d/e/2PACX-1vT-87XP8cRwMGRkXB2eyFpkNMTnuPw03mRlgVuzCTARTX-hF3j6ihEouZcOO04IgleVzym4vU3-tHiL/pub?embedded=true"></iframe>
+                </div>
+              </b-modal>
           </b-field>
         </form>
       </div>
@@ -165,6 +170,7 @@ export default {
       crm: null,
       speciality: null,
       doctor: null,
+      isCardModalActive: false,
       masks: {
         custom: {
           delimiters: ['(', ')'],

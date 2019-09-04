@@ -63,18 +63,45 @@
         <b-field grouped style="padding-top: 40px; padding-bottom: 40px;" >
           <b-autocomplete
            style="padding-left: 10px;"
-           v-model="name"
-           :data="filteredDataArray"
+           v-model="speciality"
+           :data="filteredSpecialityDataArray"
            placeholder="Pesquisar especialidade..."
            expanded
-           @select="option => selected = option"
+           @select="option => selectedSpeciality = option"
            >
            <template slot="empty">Especialidade não encontrada</template>
           </b-autocomplete>
           <button class="button is-info" style="padding-right:10px;" v-on:click="validateFields">Buscar</button>
         </b-field>
 
-        <b-field grouped v-if = "selected != null">
+        <b-field grouped style="padding-top: 5px; padding-bottom: 40px;" >
+          <b-field expanded style="padding-left: 10px;" >
+            <b-autocomplete
+             v-model="medicalAgreementBrand"
+             :data="filteredMedicalAgreementBrandDataArray"
+             placeholder="Clique aqui para selecionar o convênio..."
+             expanded
+             @select="option => selectedMedicalAgreementBrand = option"
+             >
+             <template slot="empty">Convênio não encontrado</template>
+            </b-autocomplete>
+          </b-field>
+
+          <b-field expanded >
+            <b-autocomplete
+
+             v-model="medicalAgreementPlan"
+             :data="filteredMedicalAgreementPlanDataArray"
+             placeholder="Clique aqui para selecionar o convênio..."
+             expanded
+             @select="option => selectedMedicalAgreementPlan = option"
+             >
+             <template slot="empty">Plano não encontrado</template>
+           </b-autocomplete>
+          </b-field>
+        </b-field>
+
+        <b-field grouped v-if = "selectedMedicalAgreementPlan != null">
           <b-field expanded style="padding-left: 10px;">
             <b-datepicker
               name="date"
@@ -160,7 +187,7 @@ let dateFormatter = new Date()
 export default {
   data() {
    return {
-     data: [
+     speciality_data: [
        'Endócrinologia',
        'Pediatria',
        'Ortopedia',
@@ -172,8 +199,26 @@ export default {
        'Nefrologia',
        'Hematologia',
       ],
-      name: '',
-      selected: null,
+
+     medicalAgreementBrandData: [
+        'Porto Seguro'
+      ],
+
+     medicalAgreementPlanData: [
+       'Ouro I',
+       'Ouro II',
+       'Prata I',
+       'Prata II',
+       'Bronze I',
+       'Bronze II',
+      ],
+
+      speciality: '',
+      medicalAgreementBrand: '',
+      medicalAgreementPlan: '',
+      selectedMedicalAgreementBrand: null,
+      selectedMedicalAgreementPlan: null,
+      selectedSpeciality: null,
       showWeekNumber: false,
       formatAmPm: false,
       enableSeconds: false,
@@ -191,18 +236,41 @@ export default {
       appointment_day: `${dateFormatter.getDate(this.date)}-${dateFormatter.getMonth(this.date)}-${dateFormatter.getFullYear(this.date)}`,
       appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`,
       minDate: new Date(dateFormatter.getFullYear(), dateFormatter.getMonth(), dateFormatter.getDate()),
+      token: this.$session.get('token'),
+      pacient_id: null,
+      doctor_id: null,
+      ma: null
     }
   },
 
   computed: {
-   filteredDataArray() {
-     return this.data.filter((option) => {
+   filteredSpecialityDataArray() {
+     return this.speciality_data.filter((option) => {
        return option
            .toString()
            .toLowerCase()
-           .indexOf(this.name.toLowerCase()) >= 0
+           .indexOf(this.speciality.toLowerCase()) >= 0
      })
    },
+
+   filteredMedicalAgreementPlanDataArray() {
+     return this.medicalAgreementPlanData.filter((option) => {
+       return option
+           .toString()
+           .toLowerCase()
+           .indexOf(this.medicalAgreementPlan.toLowerCase()) >= 0
+     })
+   },
+
+   filteredMedicalAgreementBrandDataArray() {
+     return this.medicalAgreementBrandData.filter((option) => {
+       return option
+           .toString()
+           .toLowerCase()
+           .indexOf(this.medicalAgreementBrand.toLowerCase()) >= 0
+     })
+   },
+
    format() {
             return this.formatAmPm ? '12' : '24'
     }
@@ -211,6 +279,8 @@ export default {
   mounted() {
     this.scroll();
     this.submitedName = this.$session.get('userName')
+    this.pacient_id = this.$session.get('pacient_id')
+
   },
 
   beforeCreate: function () {
@@ -226,20 +296,21 @@ export default {
     },
 
     postAppointment: function() {
+
+
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
       axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/appointments', {
-        pacient_id: this.$session.get('pacient_id'),
-        doctor_id: this.doctors.id,
-        medical_agreement: this.medical_agreement,
-        appointment_day: this.appointment_day,
+        pacient_id: this.pacient_id,
+        doctor_id: this.doctor_id,
+        medical_agreement: this.ma.id,
+        appointment_day: this.date,
         appointment_hour: this.appointment_hour
       },{
         headers: {
           'Access-Control-Allow-Credentials' : true,
           'Access-Control-Allow-Methods':'*',
           'Access-Control-Allow-Headers':'*',
-          'Authorization': "Bearer " + this.$session.get('token'),
-          "X-Requested-With": "XMLHttpRequest"
+          'Authorization': "Bearer " + this.token,
         }
       })
       .then((response) =>{
@@ -269,8 +340,9 @@ export default {
     },
 
     setFields: function(item) {
-      console.log(item)
+
       this.chosenDoctor = item
+      return this.doctor_id = item.doctor_id
     },
 
     validateFields: function () {
@@ -291,11 +363,25 @@ export default {
          console.log(response);
          this.doctors = response.data.data
 
-
+         return axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/medical_agreements/${this.selectedMedicalAgreementBrand}/${this.selectedMedicalAgreementPlan}`, {
+         },{
+           headers: {
+             'Access-Control-Allow-Credentials' : true,
+             'Access-Control-Allow-Methods':'*',
+             'Access-Control-Allow-Headers':'*',
+           }
+         })
         })
-       .catch((error) => {
-         console.log(error.response);
-       });
+       .then((response) =>{
+         console.log(response);
+         this.ma = response.data.data
+         console.log(this.ma)
+        })
+
+        .catch((error) => {
+          console.log(error.response);
+        });
+
        return this.visible = true
       }
     }

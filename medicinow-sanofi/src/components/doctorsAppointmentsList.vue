@@ -2,7 +2,7 @@
   <section>
     <b-navbar>
       <template slot="brand">
-          <b-navbar-item href="/">
+          <b-navbar-item >
               <p style="font-weight: bold; color: #4287f5; font-size: 25px;">MediciNOW</p>
           </b-navbar-item>
       </template>
@@ -50,89 +50,25 @@
       </template>
     </b-navbar>
 
-    <b-steps v-model="activeStep" :animated="isAnimated" type="is-info" :has-navigation="false">
-      <b-step-item label="Especialidade" :clickable="isStepsClickable">
-        <b-field grouped style="padding-top: 40px; padding-bottom: 40px;" >
-          <b-autocomplete
-           style="padding-left: 10px;"
-           v-model="name"
-           :data="filteredDataArray"
-           placeholder="Pesquisar especialidade..."
-           expanded
-           @select="option => selected = option"
-           >
-           <template slot="empty">Especialidade não encontrada</template>
-          </b-autocomplete>
-          <button class="button is-info" style="padding-right:10px;" v-on:click="validateFields">Buscar</button>
-        </b-field>
+    <div v-for="appointment in appointments" class="modal-card" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue; ">
+      <p >{{appointment.first_name}} {{doctor.last_name}}<br>
+          <!-- {{doctor.speciality}} <br> -->
+      </p>
 
-        <b-field grouped v-if = "selected != null">
-          <b-field expanded style="padding-left: 10px;">
-            <b-datepicker
-              name="date"
-              v-model="date"
-              :show-week-number="showWeekNumber"
-              placeholder="Clique para selecionar a data"
-              >
-            </b-datepicker>
-          </b-field>
-
-          <b-field style="padding-right: 10px;" expanded>
-            <b-timepicker
-                name="hour"
-                v-model="hour"
-                placeholder="Clique para selecionar a hora"
-                :enable-seconds="enableSeconds"
-                :hour-format="format" >
-            </b-timepicker>
-          </b-field>
-        </b-field>
-      </b-step-item>
-
-      <b-step-item label="Médico"  :clickable="isStepsClickable" type="is-info" v-if="visible===true">
-
-        <div v-for="doctor in doctors" class="modal-card" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue; ">
-          <b-button v-on:click="setFields(doctor)">
-          <!-- <section class="modal-card-body" role="button"> -->
-            <p >{{doctor.first_name}} {{doctor.last_name}}<br>
-                <!-- {{doctor.speciality}} <br> -->
-            </p>
-
-
-          <!-- </section> -->
-        </b-button>
-
-        </div>
-
-
-      </b-step-item>
-
-      <b-step-item label="Revisão" :clickable="isStepsClickable" v-if="visible===true" >
-        <div class="container ">
-          <div class="notification" style="padding: 20px">
-            <p v-if="this.chosenDoctor != null">
-              <p style="fontWeight: bold;">Doutor Escolhido:</p>
-              {{chosenDoctor.first_name}} {{chosenDoctor.last_name}}
-            </p>
-          </div>
-          <b-field grouped position="is-centered">
-          <b-button size="is-medium" type="is-info" v-on:click="postAppointment">Marcar Consulta</b-button>
-          <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
-            <div class="card" style="border-radius: 10px; ">
-                <div class="card-content">
-                    <div class="media">
-                        <div class="media-content" style="text-align: center;">
-                          <img src="../assets/green_check.png" alt="Image" style="height:100px;">
-                            <p class="title is-4">Sua consulta foi marcada com sucesso!</p>
-                        </div>
-                    </div>
-                </div>
+      <b-button size="is-medium" type="is-danger" v-on:click="cancelAppointment(appointment)">Cancelar Consulta</b-button>
+      <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
+        <div class="card" style="border-radius: 10px; ">
+            <div class="card-content">
+              <div class="media">
+                  <div class="media-content" style="text-align: center;">
+                    <img src="../assets/green_check.png" alt="Image" style="height:100px;">
+                    <p class="title is-4">Sua consulta foi cancelada com sucesso!</p>
+                  </div>
+              </div>
             </div>
-        </b-modal>
-        </b-field>
-          </div>
-      </b-step-item>
-    </b-steps>
+        </div>
+      </b-modal>
+    </div>
   </section>
 </template>
 
@@ -146,61 +82,67 @@ Vue.use(VeeValidate, {
   events: ''
 })
 let dateFormatter = new Date()
- Vue.use(VueSession)
+Vue.use(VueSession)
+
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 export default {
   data() {
    return {
-     data: [
-       'Endócrinologia',
-       'Pediatria',
-       'Ortopedia',
-       'Urologia',
-       'Nutrição',
-       'Oftalmologia',
-       'Dermatologia',
-       'Mastologia',
-       'Nefrologia',
-       'Hematologia',
-      ],
       name: '',
-      selected: null,
-      showWeekNumber: false,
-      formatAmPm: false,
-      enableSeconds: false,
-      activeStep: 0,
-      isAnimated: true,
-      isStepsClickable: false,
       doctors: null,
       submitedName: null ,
       date: null,
       hour: null,
       visible: false,
       isFullPage:true,
-      chosenDoctor: 'Você não selecionou a sua consulta.Por gentileza, volte para a etapa anterior.',
       isCardModalActive: false,
       appointment_day: `${dateFormatter.getDate(this.date)}-${dateFormatter.getMonth(this.date)}-${dateFormatter.getFullYear(this.date)}`,
-      appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`
+      appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`,
+      appointment: null,
+      appointments: null,
+      pacient_id: null,
+      pacient_name: [],
+      street_address: [],
+      office_id: null,
+      doctor_id: this.$session.get('doctor_id'),
+      token: this.$session.get('token')
     }
   },
 
-  computed: {
-   filteredDataArray() {
-     return this.data.filter((option) => {
-       return option
-           .toString()
-           .toLowerCase()
-           .indexOf(this.name.toLowerCase()) >= 0
-     })
-   },
-   format() {
-            return this.formatAmPm ? '12' : '24'
-    }
-  },
 
   mounted() {
     this.scroll();
-    this.submitedName = this.$session.get('userName')
+    this.submitedName = this.$session.get('userName'),
+    console.log(this.token)
+    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${this.doctor_id}`, {
+       headers: {
+         'Access-Control-Allow-Credentials' : true,
+         'Access-Control-Allow-Methods':'*',
+         'Access-Control-Allow-Headers':'*',
+         'Authorization': `Bearer ${this.token}`,
+       }
+     })
+     .then((response) =>{
+       console.log(response);
+
+       const loadingComponent = this.$buefy.loading.open({
+           container: this.isFullPage ? null : this.$refs.element.$el
+       })
+       setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+       this.appointments = response.data.data
+       this.apppointments.forEach((a) =>{
+          this.pacient_id = a.pacient_id;
+          this.office_id = a.office_id;
+          this.street_address << getAddress(this.office_id)
+          this.pacient_name << getPacientName(this.pacient_id)
+       })
+      })
+     .catch((error) => {
+       console.log(error.response);
+     });
+
   },
 
   beforeCreate: function () {
@@ -215,15 +157,10 @@ export default {
       return this.$router.push('/')
     },
 
-    postAppointment: function() {
-
+    cancelAppointment: function(appointment) {
+      this.appointment = appointment;
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/appointments', {
-        pacient_id: this.pacient_id,
-        doctor_id: this.doctor_id,
-        medical_agreement: this.medical_agreement,
-        appointment_day: this.date,
-        appointment_hour: this.hour
+      axios.delete( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${this.appointment.id}`, {
       },{
         headers: {
           'Access-Control-Allow-Credentials' : true,
@@ -257,37 +194,6 @@ export default {
         setTimeout(() => loadingComponent.close(), 3 * 1000)
     },
 
-    setFields: function(item) {
-      console.log(item)
-      this.chosenDoctor = item
-    },
-
-    validateFields: function () {
-      if(this.date != null && this.hour != null){
-       this.isStepsClickable = true
-
-       const proxyurl = "https://cors-anywhere.herokuapp.com/";
-       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors/${this.appointment_day}/${this.appointment_hour}`, {
-
-       },{
-         headers: {
-           'Access-Control-Allow-Credentials' : true,
-           'Access-Control-Allow-Methods':'*',
-           'Access-Control-Allow-Headers':'*',
-         }
-       })
-       .then((response) =>{
-         console.log(response);
-         this.doctors = response.data.data
-
-
-        })
-       .catch((error) => {
-         console.log(error.response);
-       });
-       return this.visible = true
-      }
-    }
   }
 }
 </script>

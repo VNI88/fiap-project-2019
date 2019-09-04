@@ -93,13 +93,14 @@ methods: {
               this.$session.set('userName', response.data.name)
               this.$session.set('pacient_id', response.data.id)
               response.headers.Authorization = 'Bearer ' + response.data.token
-              this.$router.push('/pacients_appointments')
+              this.$router.push('/new_appointment')
             }
             else if  (response.data.status === 'success' && response.data.token && response.data.flag === 'doctor') {
+              console.log(response.data)
               this.$session.start()
               this.$session.set('token', response.data.token)
               this.$session.set('userName', response.data.name)
-              console.log(this.$session.get('userName'))
+              this.$session.set('doctor_id', response.data.id)
               response.headers.Authorization = 'Bearer ' + response.data.token
               this.$router.push('/doctor_appointments')
             }

@@ -276,8 +276,6 @@ export default {
 
        const proxyurl = "https://cors-anywhere.herokuapp.com/";
        axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors/${this.appointment_day}/${this.appointment_hour}`, {
-
-       },{
          headers: {
            'Access-Control-Allow-Credentials' : true,
            'Access-Control-Allow-Methods':'*',
