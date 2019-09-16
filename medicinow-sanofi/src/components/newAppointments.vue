@@ -65,7 +65,7 @@
            style="padding-left: 10px;"
            v-model="speciality"
            :data="filteredSpecialityDataArray"
-           placeholder="Pesquisar especialidade..."
+           placeholder="Digite aqui a especialidade desejada..."
            expanded
            @select="option => selectedSpeciality = option"
            >
@@ -79,7 +79,7 @@
             <b-autocomplete
              v-model="medicalAgreementBrand"
              :data="filteredMedicalAgreementBrandDataArray"
-             placeholder="Clique aqui para selecionar o convênio..."
+             placeholder="Digite aqui o seu convênio..."
              expanded
              @select="option => selectedMedicalAgreementBrand = option"
              >
@@ -92,7 +92,7 @@
 
              v-model="medicalAgreementPlan"
              :data="filteredMedicalAgreementPlanDataArray"
-             placeholder="Clique aqui para selecionar o convênio..."
+             placeholder="Digite aqui o seu plano..."
              expanded
              @select="option => selectedMedicalAgreementPlan = option"
              >
@@ -191,7 +191,7 @@ import VueSession from 'vue-session';
 Vue.use(VeeValidate, {
   events: ''
 })
-let dateFormatter = new Date()
+let dateFormatter = new Date();
  Vue.use(VueSession)
 
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -245,8 +245,8 @@ export default {
       isFullPage:true,
       chosenDoctor: 'Você não selecionou a sua consulta.Por gentileza, volte para a etapa anterior.',
       isCardModalActive: false,
-      appointment_day: `${dateFormatter.getDate(this.date)}-${dateFormatter.getMonth(this.date)}-${dateFormatter.getFullYear(this.date)}`,
-      appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`,
+      appointment_day: null,
+      appointment_hour:  null,
       minDate: new Date(dateFormatter.getFullYear(), dateFormatter.getMonth(), dateFormatter.getDate()),
       token: this.$session.get('token'),
       pacient_id: null,
@@ -381,6 +381,9 @@ export default {
     },
 
     validateFields: function () {
+      this.appointment_day =`${dateFormatter.getFullYear(this.date)}-${dateFormatter.getMonth(this.date)+1}-${dateFormatter.getDate(this.date)}`
+      this.appointment_hour =  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`
+
       if(this.date != null && this.hour != null){
        this.isStepsClickable = true
 

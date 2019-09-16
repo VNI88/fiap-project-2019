@@ -78,6 +78,7 @@ import VeeValidate from 'vee-validate';
 import axios from 'axios';
 import VueSession from 'vue-session';
 
+let date = new Date();
 Vue.use(VeeValidate, {
   events: ''
 })
@@ -97,7 +98,7 @@ export default {
       visible: false,
       isFullPage:true,
       isCardModalActive: false,
-      appointment_day: `${dateFormatter.getDate(this.date)}-${dateFormatter.getMonth(this.date)}-${dateFormatter.getFullYear(this.date)}`,
+      appointment_day: `${date.getDate(this.date)}-${date.getMonth(this.date)}-${date.getFullYear(this.date)}`,
       appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`,
       appointment: null,
       appointments: null,
@@ -112,10 +113,11 @@ export default {
 
 
   mounted() {
-    this.scroll();
+    
     this.submitedName = this.$session.get('userName'),
     console.log(this.token)
-    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${this.doctor_id}`, {
+    console.log(this.doctor_id)
+    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${this.appointment_day}/${this.doctor_id}`, {
        headers: {
          'Access-Control-Allow-Credentials' : true,
          'Access-Control-Allow-Methods':'*',
@@ -132,12 +134,6 @@ export default {
        setTimeout(() => loadingComponent.close(), 3 * 1000)
 
        this.appointments = response.data.data
-       this.apppointments.forEach((a) =>{
-          this.pacient_id = a.pacient_id;
-          this.office_id = a.office_id;
-          this.street_address << getAddress(this.office_id)
-          this.pacient_name << getPacientName(this.pacient_id)
-       })
       })
      .catch((error) => {
        console.log(error.response);
@@ -166,6 +162,7 @@ export default {
           'Access-Control-Allow-Credentials' : true,
           'Access-Control-Allow-Methods':'*',
           'Access-Control-Allow-Headers':'*',
+          'Authorization': "Bearer " + this.token
         }
       })
       .then((response) =>{
@@ -176,15 +173,6 @@ export default {
       .catch((error) => {
         console.log(error.response);
       });
-    },
-
-    scroll () {
-      window.onscroll = () => {
-        let bottomOfWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-
-        if (bottomOfWindow) {
-        };
-      }
     },
 
     open() {
