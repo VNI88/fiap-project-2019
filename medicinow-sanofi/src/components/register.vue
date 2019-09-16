@@ -1,5 +1,5 @@
 <template>
-  <section class="backgroundPainting">
+  <section class="backgroundRegisterImage">
     <p class="header">MediciNOW</p>
     <div class="container ">
       <div class="notification">
@@ -106,6 +106,15 @@
                 size="is-medium"
                 placeholder="Insira a sua Especialidade"></b-input>
               </b-field>
+
+              <b-field label="Endereço">
+                <b-input
+                v-model="street_address"
+                name="street_address"
+
+                size="is-medium"
+                placeholder="Insira o endereço de seu escritório"></b-input>
+              </b-field>
             </b-collapse>
           </div>
 
@@ -155,7 +164,6 @@ Vue.use(VeeValidate, {
         input._vCleave.destroy()
     }
   }
-
 export default {
   directives: { cleave },
   data() {
@@ -170,7 +178,11 @@ export default {
       crm: null,
       speciality: null,
       doctor: null,
+      street_address: null,
       isCardModalActive: false,
+      appointment_price: null,
+      office: null,
+      counter: 0,
       masks: {
         custom: {
           delimiters: ['(', ')'],
@@ -186,49 +198,114 @@ export default {
       this.telephone = event.target._vCleave.getRawValue()
     },
 
-    validateBeforeSubmit() {
-      this.$validator.validateAll().then((result) => {
-        if (result) {
-          if (this.crm){
-            const proxyurl = "https://cors-anywhere.herokuapp.com/";
-             axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
-              last_name: this.last_name,
-              first_name: this.first_name,
-              telephone:  this.telephone,
-              email: this.email,
-              password: this.password,
-              crm: this.crm,
-              speciality: this.speciality
+   postOffice(proxyurl) {
+     axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/offices', {
+       street_address: this.street_address,
+   },{
+     headers: {
+       'Access-Control-Allow-Credentials' : true,
+       'Access-Control-Allow-Methods':'*',
+       'Access-Control-Allow-Headers':'*',
+       }
+   })
+       .then((response) =>{
+       console.log(response);
+       this.counter = this.counter +1
+       return response.data.office_id
+     })
+     .catch((error) => {
+       console.log(error.response);
 
+       this.$buefy.toast.open({
+         message: 'Por gentileza, tente novamente.',
+         type: 'is-danger',
+         position: 'is-bottom'
+       })
+     })
+   },
 
-          },{
-            headers: {
-              'Access-Control-Allow-Credentials' : true,
-              'Access-Control-Allow-Methods':'*',
-              'Access-Control-Allow-Headers':'*',
-              }
+    postDoctors(proxyurl) {
+       axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
+        last_name: this.last_name,
+        first_name: this.first_name,
+        telephone:  this.telephone,
+        email: this.email,
+        password: this.password,
+        crm: this.crm,
+        //appointment_price: this.appointment_price,
+        speciality: this.speciality
+      },{
+      headers: {
+        'Access-Control-Allow-Credentials' : true,
+        'Access-Control-Allow-Methods':'*',
+        'Access-Control-Allow-Headers':'*',
+        }
+      })
+        .then((response) =>{
+        console.log(response);
+        this.counter = this.counter +1
+        return response.data
+
+      })
+      .catch((error) => {
+        console.log(error.response);
+
+        this.$buefy.toast.open({
+          message: 'Por gentileza, tente novamente.',
+          type: 'is-danger',
+          position: 'is-bottom'
+        })
+      })
+   },
+    async postDoctorData (proxyurl) {
+
+      await axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors_data', {
+
+            doctor: this.doctor,
+            office_id: this.office
+       },{
+         headers: {
+           'Access-Control-Allow-Credentials' : true,
+           'Access-Control-Allow-Methods':'*',
+           'Access-Control-Allow-Headers':'*',
+           }
+       })
+       .then((response) =>{
+         console.log(response)
+
+          this.$buefy.toast.open({
+            message: 'Cadastro realizado com sucesso!',
+            type: 'is-success',
+            position: 'is-bottom'
           })
-              .then((response) =>{
-              console.log(response);
-              this.doctor = response.data
 
-              this.$buefy.toast.open({
-                message: 'Cadastro realizado com sucesso!',
-                type: 'is-success',
-                position: 'is-bottom'
-              })
+          return this.$router.push('/')
+        })
+        .catch((error) => {
+            console.log(error.response);
 
-              return this.$router.push('/')
+            this.$buefy.toast.open({
+              message: 'Por gentileza, tente novamente.',
+              type: 'is-danger',
+              position: 'is-bottom'
             })
-            .catch((error) => {
-              console.log(error.response);
+          })
 
-              this.$buefy.toast.open({
-                message: 'Por gentileza, tente novamente.',
-                type: 'is-danger',
-                position: 'is-bottom'
-              })
-            });
+    },
+
+      validateBeforeSubmit() {
+       this.$validator.validateAll().then((result) => {
+         if (result) {
+           if (this.crm){
+            const proxyurl = "https://cors-anywhere.herokuapp.com/";
+            this.office =    this.postOffice(proxyurl);
+            this.doctor =    this.postDoctors(proxyurl);
+
+            while(this.counter < 2){
+              console.log(this.counter)
+            }
+
+            this.postDoctor(proxyurl)
           }
           else{
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -277,7 +354,9 @@ export default {
           })
         }
       });
-    },
+    }
+
+
   }
 }
 </script>
@@ -291,8 +370,8 @@ export default {
   font-weight: bold;
   color:#f0f2f5;
 }
-.backgroundPainting {
-  background-color: #7ea2d9;
-  height:950px;
+.backgroundRegisterImage {
+  background-image: url("../assets/register_background.jpeg");
+  height: 850px;
 }
 </style>

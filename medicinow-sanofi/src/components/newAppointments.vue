@@ -65,7 +65,7 @@
            style="padding-left: 10px;"
            v-model="speciality"
            :data="filteredSpecialityDataArray"
-           placeholder="Pesquisar especialidade..."
+           placeholder="Digite aqui a especialidade desejada..."
            expanded
            @select="option => selectedSpeciality = option"
            >
@@ -79,7 +79,7 @@
             <b-autocomplete
              v-model="medicalAgreementBrand"
              :data="filteredMedicalAgreementBrandDataArray"
-             placeholder="Clique aqui para selecionar o convênio..."
+             placeholder="Digite aqui o seu convênio..."
              expanded
              @select="option => selectedMedicalAgreementBrand = option"
              >
@@ -92,7 +92,7 @@
 
              v-model="medicalAgreementPlan"
              :data="filteredMedicalAgreementPlanDataArray"
-             placeholder="Clique aqui para selecionar o convênio..."
+             placeholder="Digite aqui o seu plano..."
              expanded
              @select="option => selectedMedicalAgreementPlan = option"
              >
@@ -148,7 +148,11 @@
           <div class="notification" style="padding: 20px">
             <p v-if="this.chosenDoctor != null">
               <p style="fontWeight: bold;">Doutor Escolhido:</p>
-              {{chosenDoctor.first_name}} {{chosenDoctor.last_name}}
+              {{chosenDoctor.first_name}} {{chosenDoctor.last_name}}</br>
+              <p style="fontWeight: bold;">Hora da consulta:</p>
+              {{this.appointment_hour}}
+              <p style="fontWeight: bold;">Dia da Consulta:</p>
+              {{this.appointment_day}}
             </p>
           </div>
           <b-field grouped position="is-centered">
@@ -181,7 +185,7 @@ import VueSession from 'vue-session';
 Vue.use(VeeValidate, {
   events: ''
 })
-let dateFormatter = new Date()
+let dateFormatter = new Date();
  Vue.use(VueSession)
 
 export default {
@@ -233,8 +237,8 @@ export default {
       isFullPage:true,
       chosenDoctor: 'Você não selecionou a sua consulta.Por gentileza, volte para a etapa anterior.',
       isCardModalActive: false,
-      appointment_day: `${dateFormatter.getDate(this.date)}-${dateFormatter.getMonth(this.date)}-${dateFormatter.getFullYear(this.date)}`,
-      appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`,
+      appointment_day: null,
+      appointment_hour:  null,
       minDate: new Date(dateFormatter.getFullYear(), dateFormatter.getMonth(), dateFormatter.getDate()),
       token: this.$session.get('token'),
       pacient_id: null,
@@ -303,7 +307,7 @@ export default {
         pacient_id: this.pacient_id,
         doctor_id: this.doctor_id,
         medical_agreement: this.ma.id,
-        appointment_day: this.date,
+        appointment_day: this.appointment_day,
         appointment_hour: this.appointment_hour
       },{
         headers: {
@@ -342,13 +346,32 @@ export default {
     setFields: function(item) {
 
       this.chosenDoctor = item
-      return this.doctor_id = item.doctor_id
+       this.doctor_id = item.doctor_id
+
+      const proxyurl = "https://cors-anywhere.herokuapp.com/";
+      axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors_data/${this.doctor_id}`, {
+
+    },{
+      headers: {
+        'Access-Control-Allow-Credentials' : true,
+        'Access-Control-Allow-Methods':'*',
+        'Access-Control-Allow-Headers':'*',
+        }
+    })
+        .then((response) =>{
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error.response);
+      });
     },
 
     validateFields: function () {
+      this.appointment_day =`${dateFormatter.getFullYear(this.date)}-${dateFormatter.getMonth(this.date)+1}-${dateFormatter.getDate(this.date)}`
+      this.appointment_hour =  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`
+
       if(this.date != null && this.hour != null){
        this.isStepsClickable = true
-
        const proxyurl = "https://cors-anywhere.herokuapp.com/";
        axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors/${this.appointment_day}/${this.appointment_hour}`, {
 
@@ -376,6 +399,8 @@ export default {
          console.log(response);
          this.ma = response.data.data
          console.log(this.ma)
+
+
         })
 
         .catch((error) => {
