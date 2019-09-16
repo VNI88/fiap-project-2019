@@ -130,7 +130,7 @@
         <div v-for="doctor in doctors" class="modal-card" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue; ">
           <b-button v-on:click="setFields(doctor)">
           <!-- <section class="modal-card-body" role="button"> -->
-            <p >{{doctor.first_name}} {{doctor.last_name}}<br>
+            <p style="text-align:left;">{{doctor.first_name}} {{doctor.last_name}}<br>
                 <!-- {{doctor.speciality}} <br> -->
             </p>
 
@@ -146,10 +146,20 @@
       <b-step-item label="Revisão" :clickable="isStepsClickable" v-if="visible===true" >
         <div class="container ">
           <div class="notification" style="padding: 20px">
-            <p v-if="this.chosenDoctor != null">
-              <p style="fontWeight: bold;">Doutor Escolhido:</p>
-              {{chosenDoctor.first_name}} {{chosenDoctor.last_name}}
-            </p>
+            <div v-if="this.chosenDoctor.first_name !=null">
+              <p >
+                <p style="fontWeight: bold;" >Doutor Escolhido:</p>
+                {{chosenDoctor.first_name}} {{chosenDoctor.last_name}}
+                  <p style="fontWeight: bold;" >Especialidade:</p>
+                {{this.speciality}}
+                <p style="fontWeight: bold;" >Data:</p>
+                {{this.appointment_day}}
+                <p style="fontWeight: bold;" >Hora:</p>
+                {{this.appointment_hour}}
+                <p style="fontWeight: bold;" >Endereço:</p>
+                {{this.streetAddress}}
+              </p>
+            </div>
           </div>
           <b-field grouped position="is-centered">
           <b-button size="is-medium" type="is-info" v-on:click="postAppointment">Marcar Consulta</b-button>
@@ -183,6 +193,8 @@ Vue.use(VeeValidate, {
 })
 let dateFormatter = new Date()
  Vue.use(VueSession)
+
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
 export default {
   data() {
@@ -239,7 +251,9 @@ export default {
       token: this.$session.get('token'),
       pacient_id: null,
       doctor_id: null,
-      ma: null
+      ma: null,
+      office_id: null,
+      streetAddress: null
     }
   },
 
@@ -304,7 +318,8 @@ export default {
         doctor_id: this.doctor_id,
         medical_agreement: this.ma.id,
         appointment_day: this.date,
-        appointment_hour: this.appointment_hour
+        appointment_hour: this.appointment_hour,
+        office_id: this.office_id
       },{
         headers: {
           'Access-Control-Allow-Credentials' : true,
@@ -315,7 +330,9 @@ export default {
       })
       .then((response) =>{
         console.log(response);
-         return this.isCardModalActive = true
+
+        this.isCardModalActive = true
+         this.$router.push('/new_appointment')
         }
       )
       .catch((error) => {
@@ -342,6 +359,24 @@ export default {
     setFields: function(item) {
 
       this.chosenDoctor = item
+      axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/offices/${this.chosenDoctor.office_id}`, {
+          headers: {
+            'Access-Control-Allow-Credentials' : true,
+            'Access-Control-Allow-Methods':'*',
+            'Access-Control-Allow-Headers':'*',
+            'Authorization': "Bearer " + this.token
+          }
+        })
+
+        .then((response) =>{
+          console.log(response);
+          this.streetAddress = response.data.data.street_address
+       })
+
+       .catch((error) => {
+         console.log(error.response);
+       });
+
       return this.doctor_id = item.doctor_id
     },
 
@@ -349,7 +384,7 @@ export default {
       if(this.date != null && this.hour != null){
        this.isStepsClickable = true
 
-       const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
        axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors/${this.appointment_day}/${this.appointment_hour}`, {
 
        },{
@@ -363,7 +398,14 @@ export default {
          console.log(response);
          this.doctors = response.data.data
 
-         return axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/medical_agreements/${this.selectedMedicalAgreementBrand}/${this.selectedMedicalAgreementPlan}`, {
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+      }
+
+      if(this.selectedMedicalAgreementBrand != null && this.selectedMedicalAgreementPlan != null){
+        axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/medical_agreements/${this.selectedMedicalAgreementBrand}/${this.selectedMedicalAgreementPlan}`, {
          },{
            headers: {
              'Access-Control-Allow-Credentials' : true,
@@ -371,22 +413,18 @@ export default {
              'Access-Control-Allow-Headers':'*',
            }
          })
-        })
-       .then((response) =>{
-         console.log(response);
-         this.ma = response.data.data
-         console.log(this.ma)
-        })
-
-        .catch((error) => {
-          console.log(error.response);
-        });
-
-       return this.visible = true
-      }
-    }
-  }
-}
+         .then((response) =>{
+           console.log(response);
+           this.ma = response.data.data.id
+           this.visible = true
+         })
+         .catch((error) => {
+           console.log(error.response);
+         });
+       }
+     }
+   }
+ }
 </script>
 
 

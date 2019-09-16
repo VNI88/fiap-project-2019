@@ -2,7 +2,7 @@
   <section class="backgroundPainting">
     <p class="header">MediciNOW</p>
     <div class="container ">
-      <div class="notification">
+      <div class="notification" style="margin-left:50px; margin-right:50px;">
         <form>
 
           <b-field
@@ -106,6 +106,14 @@
                 size="is-medium"
                 placeholder="Insira a sua Especialidade"></b-input>
               </b-field>
+
+              <b-input
+                v-model='address'
+                name='address'
+                size="is-medium"
+                maxlength="30"
+                placeholder="Insira o seu endereço aqui">
+              </b-input>
             </b-collapse>
           </div>
 
@@ -171,6 +179,9 @@ export default {
       speciality: null,
       doctor: null,
       isCardModalActive: false,
+      address: null,
+      street_address: null,
+      office_id: null,
       masks: {
         custom: {
           delimiters: ['(', ')'],
@@ -191,36 +202,51 @@ export default {
         if (result) {
           if (this.crm){
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
-             axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
-              last_name: this.last_name,
-              first_name: this.first_name,
-              telephone:  this.telephone,
-              email: this.email,
-              password: this.password,
-              crm: this.crm,
-              speciality: this.speciality
-
-
-          },{
-            headers: {
-              'Access-Control-Allow-Credentials' : true,
-              'Access-Control-Allow-Methods':'*',
-              'Access-Control-Allow-Headers':'*',
-              }
-          })
-              .then((response) =>{
-              console.log(response);
-              this.doctor = response.data
-
-              this.$buefy.toast.open({
-                message: 'Cadastro realizado com sucesso!',
-                type: 'is-success',
-                position: 'is-bottom'
+             axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/offices', {
+              street_address: this.address
+              },
+              {
+                headers: {
+                'Access-Control-Allow-Credentials' : true,
+                'Access-Control-Allow-Methods':'*',
+                'Access-Control-Allow-Headers':'*',
+                }
               })
+              .then((response) =>{
+              this.office_id = response.data.office_id
+              
+              axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
+               last_name: this.last_name,
+               first_name: this.first_name,
+               telephone:  this.telephone,
+               email: this.email,
+               password: this.password,
+               crm: this.crm,
+               speciality: this.speciality,
+               office_id: this.office_id
+              },
+              {
+                headers: {
+                 'Access-Control-Allow-Credentials' : true,
+                 'Access-Control-Allow-Methods':'*',
+                 'Access-Control-Allow-Headers':'*',
+                }
+              })
+               .then((response) =>{
+               console.log(response);
+               this.doctor = response.data
 
-              return this.$router.push('/')
+               this.$buefy.toast.open({
+                 message: 'Cadastro realizado com sucesso!',
+                 type: 'is-success',
+                 position: 'is-bottom'
+               })
+
+               return this.$router.push('/')
+             })
             })
-            .catch((error) => {
+
+           .catch((error) => {
               console.log(error.response);
 
               this.$buefy.toast.open({
@@ -292,7 +318,8 @@ export default {
   color:#f0f2f5;
 }
 .backgroundPainting {
-  background-color: #7ea2d9;
-  height:950px;
+  /* background-color: #7ea2d9; */
+  background-image: url("../assets/reg_back_img.jpeg");
+  height:850px;
 }
 </style>
