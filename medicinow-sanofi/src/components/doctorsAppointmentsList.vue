@@ -51,10 +51,16 @@
     </b-navbar>
 
     <div v-for="appointment in appointments" class="modal-card" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue; ">
-      <p >{{appointment.first_name}} {{doctor.last_name}}<br>
-          <!-- {{doctor.speciality}} <br> -->
-      </p>
-
+      <p style="fontWeight: bold;">Data</p><br>
+        {{appointment.appointment_day}}
+      <p style="fontWeight: bold;">Hora</p>
+        {{appointment.appointment_hour}}
+      <p style="fontWeight: bold;">Paciente</p>
+        {{appointment.pacient_first_name}}  {{appointment.pacient_last_name}}
+      <p style="fontWeight: bold;">Convênio</p>
+        {{appointment.m.brand}} {{appointment.m.plan}}
+      <p style="fontWeight: bold;">Consultório</p>
+        {{appointment.street_address}}
       <b-button size="is-medium" type="is-danger" v-on:click="cancelAppointment(appointment)">Cancelar Consulta</b-button>
       <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
         <div class="card" style="border-radius: 10px; ">
@@ -113,7 +119,7 @@ export default {
 
 
   mounted() {
-    
+
     this.submitedName = this.$session.get('userName'),
     console.log(this.token)
     console.log(this.doctor_id)
