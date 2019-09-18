@@ -4,7 +4,7 @@
       <p class="header">MediciNOW</p>
       <form >
         <div style="display: flex;">
-          <div style="width: 17px;"></div>
+        <div style="width: 90px;"></div>
         <div class="modal-card" style="width:auto;">
           <section class="modal-card-body" style=": center">
             <b-field
@@ -45,7 +45,7 @@
             </div>
           </footer>
         </div>
-        <div style="width: 10px;"></div>
+        <div style="width: 90px;"></div>
       </div>
       </form>
       </div>
@@ -143,6 +143,6 @@ methods: {
   height:800px;
 }
 .buttonPosition {
-  padding-left: 80px;
+  padding-left:100px;
 }
 </style>

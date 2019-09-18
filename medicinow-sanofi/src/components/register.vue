@@ -2,7 +2,7 @@
   <section class="backgroundRegisterImage">
     <p class="header">MediciNOW</p>
     <div class="container ">
-      <div class="notification">
+      <div class="notification" style="margin-left:50px; margin-right:50px;">
         <form>
 
           <b-field
@@ -115,6 +115,18 @@
                 size="is-medium"
                 placeholder="Insira o endereço de seu escritório"></b-input>
               </b-field>
+
+              <b-field  label="Convênio" >
+                <b-select placeholder="Selecione o seu  Convênio" v-model="selectedMedicalAgreementBrand">
+                    <option v-for="brand in medicalAgreementBrandData">{{brand}}</option>
+                </b-select>
+              </b-field>
+
+              <b-field  label="Plano" >
+                <b-select placeholder="Selecione o seu plano" v-model="selectedMedicalAgreementPlan">
+                    <option v-for="ma in medicalAgreementPlanData"  >{{ma}}</option>
+                </b-select>
+              </b-field>
             </b-collapse>
           </div>
 
@@ -177,19 +189,33 @@ export default {
       pacient: null,
       crm: null,
       speciality: null,
-      doctor: null,
+      doctor_id: null,
       street_address: null,
       isCardModalActive: false,
       appointment_price: null,
-      office: null,
-      counter: 0,
+      selectedMedicalAgreementBrand: null,
+      selectedMedicalAgreementPlan: null,
+      medical_agreement_id: null,
+      office_id: null,
       masks: {
         custom: {
           delimiters: ['(', ')'],
           blocks:[0, 2, 9],
           numericOnly: true
         }
-      }
+      },
+      medicalAgreementBrandData: [
+         'Porto Seguro'
+       ],
+
+      medicalAgreementPlanData: [
+        'Ouro I',
+        'Ouro II',
+        'Prata I',
+        'Prata II',
+        'Bronze I',
+        'Bronze II',
+       ],
     }
   },
 
@@ -210,8 +236,8 @@ export default {
    })
        .then((response) =>{
        console.log(response);
-       this.counter = this.counter +1
-       return response.data.office_id
+       this.office_id =  response.data.office_id
+       this.getMedicalAgreementId(proxyurl, this.office_id)
      })
      .catch((error) => {
        console.log(error.response);
@@ -224,7 +250,27 @@ export default {
      })
    },
 
-    postDoctors(proxyurl) {
+   getMedicalAgreementId(proxyurl, office_id) {
+       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/medical_agreements/${this.selectedMedicalAgreementBrand}/${this.selectedMedicalAgreementPlan}`, {
+        },{
+          headers: {
+            'Access-Control-Allow-Credentials' : true,
+            'Access-Control-Allow-Methods':'*',
+            'Access-Control-Allow-Headers':'*',
+          }
+        })
+        .then((response) =>{
+          console.log(response);
+          this.ma = response.data.data.medical_agreement_id
+          this.postDoctors(proxyurl, this.ma, office_id)
+        })
+        .catch((error) => {
+          console.log(error.response);
+        });
+
+   },
+
+    postDoctors(proxyurl, maId, office_id) {
        axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors', {
         last_name: this.last_name,
         first_name: this.first_name,
@@ -243,9 +289,8 @@ export default {
       })
         .then((response) =>{
         console.log(response);
-        this.counter = this.counter +1
-        return response.data
-
+        this.doctor_id = response.data.id
+        this.postDoctorData(proxyurl, this.doctor_id, office_id, maId)
       })
       .catch((error) => {
         console.log(error.response);
@@ -257,12 +302,13 @@ export default {
         })
       })
    },
-    async postDoctorData (proxyurl) {
+     postDoctorData (proxyurl, doctor_id, office_id, medical_agreement_id) {
 
-      await axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors_data', {
+     axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/doctors_data', {
 
-            doctor: this.doctor,
-            office_id: this.office
+            doctor_id: doctor_id,
+            office_id: office_id,
+            medical_agreement_id: medical_agreement_id
        },{
          headers: {
            'Access-Control-Allow-Credentials' : true,
@@ -299,13 +345,6 @@ export default {
            if (this.crm){
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
             this.office =    this.postOffice(proxyurl);
-            this.doctor =    this.postDoctors(proxyurl);
-
-            while(this.counter < 2){
-              console.log(this.counter)
-            }
-
-            this.postDoctor(proxyurl)
           }
           else{
             const proxyurl = "https://cors-anywhere.herokuapp.com/";
