@@ -156,6 +156,8 @@
                 {{this.appointment_day}}
                 <p style="fontWeight: bold;" >Hora:</p>
                 {{this.appointment_hour}}
+                <p style="fontWeight: bold;" >Convênio:</p>
+                {{this.selectedMedicalAgreementBrand}} {{this.selectedMedicalAgreementPlan}}
                 <p style="fontWeight: bold;" >Endereço:</p>
                 {{this.streetAddress}}
               </p>
@@ -253,7 +255,8 @@ export default {
       doctor_id: null,
       ma: null,
       office_id: null,
-      streetAddress: null
+      streetAddress: null,
+      id: null
     }
   },
 
@@ -310,8 +313,6 @@ export default {
     },
 
     postAppointment: function() {
-
-
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
       axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/appointments', {
         pacient_id: this.pacient_id,
@@ -359,25 +360,48 @@ export default {
     setFields: function(item) {
 
       this.chosenDoctor = item
-      axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/offices/${this.chosenDoctor.office_id}`, {
-          headers: {
-            'Access-Control-Allow-Credentials' : true,
-            'Access-Control-Allow-Methods':'*',
-            'Access-Control-Allow-Headers':'*',
-            'Authorization': "Bearer " + this.token
-          }
-        })
+      this.doctor_id = item.doctor_id
+      this.getDoctorsInfo(this.doctor_id)
+    },
 
-        .then((response) =>{
-          console.log(response);
-          this.streetAddress = response.data.data.street_address
+    getFreeDoctors: function() {
+      axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors/${this.appointment_day}/${this.appointment_hour}`, {
+      },{
+        headers: {
+          'Access-Control-Allow-Credentials' : true,
+          'Access-Control-Allow-Methods':'*',
+          'Access-Control-Allow-Headers':'*',
+        }
+      })
+      .then((response) =>{
+        console.log(response);
+        this.doctors = response.data.data
+
        })
-
        .catch((error) => {
          console.log(error.response);
        });
+    },
 
-      return this.doctor_id = item.doctor_id
+    getDoctorsInfo: function(doctor_id) {
+      console.log(this.token)
+      axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors_data/${doctor_id}`,{
+         headers: {
+           'Access-Control-Allow-Credentials' : true,
+           'Access-Control-Allow-Methods':'*',
+           'Access-Control-Allow-Headers':'*',
+           'Authorization': `Bearer ${this.token}`,
+         }
+       })
+       .then((response) =>{
+         console.log(response);
+         this.ma = response.data.data.medical_agreement_id
+         this.office_id = response.data.data.office_id
+         this.streetAddress = response.data.data.streetAddress
+       })
+       .catch((error) => {
+         console.log(error.response);
+       });
     },
 
     validateFields: function () {
@@ -386,44 +410,11 @@ export default {
 
       if(this.date != null && this.hour != null){
        this.isStepsClickable = true
-
-
-       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors/${this.appointment_day}/${this.appointment_hour}`, {
-
-       },{
-         headers: {
-           'Access-Control-Allow-Credentials' : true,
-           'Access-Control-Allow-Methods':'*',
-           'Access-Control-Allow-Headers':'*',
-         }
-       })
-       .then((response) =>{
-         console.log(response);
-         this.doctors = response.data.data
-
-        })
-        .catch((error) => {
-          console.log(error.response);
-        });
+       this.getFreeDoctors()
       }
 
       if(this.selectedMedicalAgreementBrand != null && this.selectedMedicalAgreementPlan != null){
-        axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/medical_agreements/${this.selectedMedicalAgreementBrand}/${this.selectedMedicalAgreementPlan}`, {
-         },{
-           headers: {
-             'Access-Control-Allow-Credentials' : true,
-             'Access-Control-Allow-Methods':'*',
-             'Access-Control-Allow-Headers':'*',
-           }
-         })
-         .then((response) =>{
-           console.log(response);
-           this.ma = response.data.data.id
-           this.visible = true
-         })
-         .catch((error) => {
-           console.log(error.response);
-         });
+        this.visible = true
        }
      }
    }
