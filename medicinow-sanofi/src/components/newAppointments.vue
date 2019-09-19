@@ -189,6 +189,7 @@ import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 import axios from 'axios';
 import VueSession from 'vue-session';
+import moment from 'moment'
 
 Vue.use(VeeValidate, {
   events: ''
@@ -407,9 +408,10 @@ export default {
     },
 
     validateFields: function () {
-      this.appointment_day =`${dateFormatter.getFullYear(this.date)}-${dateFormatter.getMonth(this.date)+1}-${dateFormatter.getDate(this.date)}`
-      this.appointment_hour =  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`
-
+      console.log(this.hour)
+      this.appointment_day =`${moment(this.date).format('YYYY-MM-DD')}`
+      this.appointment_hour =  `${moment(this.hour).format('HH:MM')}`
+      console.log(this.appointment_hour)
       if(this.date != null && this.hour != null){
        this.isStepsClickable = true
        this.getFreeDoctors()

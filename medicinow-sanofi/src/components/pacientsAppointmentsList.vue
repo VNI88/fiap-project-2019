@@ -7,6 +7,14 @@
           </b-navbar-item>
       </template>
       <template slot="start">
+        <b-navbar-item href="/new_appointment">
+          <a
+          class="navbar-item"
+          role="button">
+            <span>Nova Consulta</span>
+          </a>
+        </b-navbar-item>
+
         <b-navbar-item>
           <b-dropdown hoverable aria-role="list">
             <a
@@ -42,7 +50,7 @@
       </template>
       <template slot="end">
           <b-navbar-item >
-            <p style="fontWeight: bold; color:#4287f5;">Doutor,</p>
+            <p style="fontWeight: bold; color:#4287f5;">Paciente,</p>
             </b-navbar-item>
         <b-navbar-item  style="width:auto;">
             <p> {{submitedName}}</p>
@@ -92,13 +100,7 @@ import Vue from 'vue';
 import VeeValidate from 'vee-validate';
 import axios from 'axios';
 import VueSession from 'vue-session';
-
-let date = new Date();
-Vue.use(VeeValidate, {
-  events: ''
-})
-let dateFormatter = new Date()
-Vue.use(VueSession)
+import moment from 'moment'
 
 const proxyurl = "https://cors-anywhere.herokuapp.com/";
 
@@ -113,8 +115,8 @@ export default {
       visible: false,
       isFullPage:true,
       isCardModalActive: false,
-      appointment_day: `${dateFormatter.getFullYear(this.date)}-${dateFormatter.getMonth(this.date)+1}-${dateFormatter.getDate(this.date)}`,
-      appointment_hour:  `${dateFormatter.getHours(this.hour)}:${dateFormatter.getMinutes(this.hour)}`,
+      appointment_day: `${moment(this.date).format('YYYY-MM-DD')}`,
+      appointment_hour: `${moment(this.hour).format('HH:MM')}`,
       appointment: null,
       appointments: null,
       pacient_id: null,
@@ -130,31 +132,7 @@ export default {
   mounted() {
 
     this.submitedName = this.$session.get('userName'),
-    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/pacient_day_list/${this.appointment_day}/${this.pacient_id}`, {
-       headers: {
-         'Access-Control-Allow-Credentials' : true,
-         'Access-Control-Allow-Methods':'*',
-         'Access-Control-Allow-Headers':'*',
-         'Authorization': `Bearer ${this.token}`,
-       }
-     })
-     .then((response) =>{
-       console.log(response);
-
-       const loadingComponent = this.$buefy.loading.open({
-
-       })
-       setTimeout(() => loadingComponent.close(), 3 * 1000)
-
-       this.appointments = response.data.data
-      })
-     .catch((error) => {
-       console.log(error.response);
-       if (error.response.data.error.received === 0) {
-         this.zeroAppointments = 0
-       }
-     });
-
+    this.getPacientDayAppointments()
   },
 
   beforeCreate: function () {
@@ -169,9 +147,34 @@ export default {
       return this.$router.push('/')
     },
 
+    getPacientDayAppointments: function () {
+      axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/pacient_day_list/${this.appointment_day}/${this.pacient_id}`, {
+         headers: {
+           'Access-Control-Allow-Credentials' : true,
+           'Access-Control-Allow-Methods':'*',
+           'Access-Control-Allow-Headers':'*',
+           'Authorization': `Bearer ${this.token}`,
+         }
+       })
+       .then((response) =>{
+         console.log(response);
+
+         const loadingComponent = this.$buefy.loading.open({})
+         setTimeout(() => loadingComponent.close(), 3 * 1000)
+
+         this.appointments = response.data.data
+        })
+       .catch((error) => {
+         console.log(error.response);
+         if (error.response.data.error.received === 0) {
+           this.zeroAppointments = 0
+         }
+       });
+    },
+
     cancelAppointment: function(appointment_id) {
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      axios.put( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${appointment_id}`,{
+      axios.put( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${appointment_id}`, {} ,{
         headers: {
           'Access-Control-Allow-Credentials' : true,
           'Access-Control-Allow-Methods':'*',
@@ -182,7 +185,7 @@ export default {
       .then((response) =>{
         console.log(response);
         this.isCardModalActive = true
-        this.$router.push('/pacients_appointments')
+        setTimeout(() => { this.$router.push('/pacients_appointments')}, 2000)
         }
       )
       .catch((error) => {
