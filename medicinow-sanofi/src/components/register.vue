@@ -1,8 +1,7 @@
 <template>
   <section class="backgroundRegisterImage">
-    <p class="header">MediciNOW</p>
     <div class="container ">
-      <div class="notification" style="margin-left:50px; margin-right:50px;">
+      <div class="notification" style="margin-left:50px; margin-right:50px; margin-top: 20px">
         <form>
 
           <b-field
@@ -93,7 +92,7 @@
                 <b-input
                 v-model="crm"
                 name="crm"
-
+                maxlength="13"
                 size="is-medium"
                 placeholder="Insira o seu CRM"></b-input>
               </b-field>
@@ -102,7 +101,7 @@
                 <b-input
                 v-model="speciality"
                 name="speciality"
-
+                maxlength="20"
                 size="is-medium"
                 placeholder="Insira a sua Especialidade"></b-input>
               </b-field>
@@ -111,7 +110,7 @@
                 <b-input
                 v-model="street_address"
                 name="street_address"
-
+                maxlength="60"
                 size="is-medium"
                 placeholder="Insira o endereço de seu escritório"></b-input>
               </b-field>
@@ -407,10 +406,16 @@ export default {
   font-size: 50px;
   font-family: "Courier";
   font-weight: bold;
-  color:#f0f2f5;
+  color:#4b8efa !important;
 }
 .backgroundRegisterImage {
   background-image: url("../assets/register_background.jpeg");
-  height: 850px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* position: absolute; */
+  height:100vh;
+  width: 100vw;
+  overflow: auto;
+  align-items: center
 }
 </style>

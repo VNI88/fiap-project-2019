@@ -68,23 +68,6 @@
         <p style="fontWeight: bold;">Consultório</p>
           {{appointment.street_address}}
       </div>
-
-      <b-field grouped position="is-right" style="margin: 20px; ">
-        <b-button size="is-medium" type="is-danger" v-on:click="cancelAppointment(appointment.appointment_id)">Cancelar Consulta</b-button>
-      </b-field>
-
-      <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
-        <div class="card" style="border-radius: 10px; ">
-            <div class="card-content">
-              <div class="media">
-                  <div class="media-content" style="text-align: center;">
-                    <img src="../assets/green_check.png" alt="Image" style="height:100px;">
-                    <p class="title is-4">A consulta foi cancelada com sucesso!</p>
-                  </div>
-              </div>
-            </div>
-        </div>
-      </b-modal>
     </div>
   </section>
 </template>
@@ -132,7 +115,7 @@ export default {
   mounted() {
 
     this.submitedName = this.$session.get('userName'),
-    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_day_list/${this.appointment_day}/${this.doctor_id}`, {
+    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_canceled_list/${this.doctor_id}`, {
        headers: {
          'Access-Control-Allow-Credentials' : true,
          'Access-Control-Allow-Methods':'*',
@@ -170,27 +153,6 @@ export default {
     logout: function () {
       this.$session.destroy()
       return this.$router.push('/')
-    },
-
-    cancelAppointment: function(appointment_id) {
-      const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      axios.put( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${appointment_id}`,{
-        headers: {
-          'Access-Control-Allow-Credentials' : true,
-          'Access-Control-Allow-Methods':'*',
-          'Access-Control-Allow-Headers':'*',
-          'Authorization': `Bearer ${this.token}`,
-        }
-      })
-      .then((response) =>{
-        console.log(response);
-        this.isCardModalActive = true
-        this.$router.push('/doctor_appointments')
-        }
-      )
-      .catch((error) => {
-        console.log(error.response);
-      });
     },
 
     open() {

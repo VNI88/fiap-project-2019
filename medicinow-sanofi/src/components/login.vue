@@ -1,12 +1,11 @@
 <template>
   <section class="backgroundLoginImage">
-    <div style="align-items: center">
+    <div style="">
       <p class="header">MediciNOW</p>
       <form >
-        <div style="display: flex;">
-        <div style="width: 90px;"></div>
+        <div style="display: flex; margin: 0 auto;" class="phone">
         <div class="modal-card" style="width:auto;">
-          <section class="modal-card-body" style=": center">
+          <section class="modal-card-body">
             <b-field
             label="Email"
             :type="{'is-danger': errors.has('email')}"
@@ -45,7 +44,6 @@
             </div>
           </footer>
         </div>
-        <div style="width: 90px;"></div>
       </div>
       </form>
       </div>
@@ -136,14 +134,28 @@ methods: {
   font-size: 50px;
   font-family: "Courier";
   font-weight: bold;
-  color:#f0f2f5;
+  color:#f0f2f5 !important;
 }
 .backgroundLoginImage {
   background-image: url("../assets/med_now_back.jpeg");
-  height:800px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* position: absolute; */
+  height:100vh;
+  width: 100vw;
+  overflow: auto;
+  align-items: center
 }
 .buttonPosition {
   padding-left:100px;
   align-self: center;
 }
+@media (min-width: 320px) and (max-width: 424px) {
+  .phone {
+    background-image: url("../assets/med_now_back.jpeg");
+    background-repeat: no-repeat;
+    margin: 0 auto !important;
+    justify-content: center;
+  }
+ }
 </style>

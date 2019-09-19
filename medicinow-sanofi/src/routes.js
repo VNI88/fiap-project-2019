@@ -1,7 +1,12 @@
 import landingPage from './components/landingPage.vue';
 import newAppointments  from './components/newAppointments.vue';
 import  doctorsAppointmentsList from './components/doctorsAppointmentsList.vue';
+import  doctorFutureAppointmentsList from './components/doctorFutureAppointmentsList.vue';
+import  doctorPastAppointmentsList from './components/doctorPastAppointmentsList.vue';
+import  doctorCanceledAppointmentsList from './components/doctorCanceledAppointmentsList.vue';
 import  pacientsAppointmentsList from './components/pacientsAppointmentsList.vue';
+import  pacientsFutureAppointmentsList from './components/pacientsFutureAppointmentsList.vue';
+import  pacientsPastAppointmentsList from './components/pacientsPastAppointmentsList.vue';
 import register from './components/register.vue'
 import login from './components/login.vue'
 
@@ -27,9 +32,34 @@ const routes = [
     component: doctorsAppointmentsList
   },
   {
+    path: '/doctor_next_appointments',
+    name: 'doctor_next_appointments',
+    component: doctorFutureAppointmentsList
+  },
+  {
+    path: '/doctor_historic',
+    name: 'doctor_historic',
+    component: doctorPastAppointmentsList
+  },
+  {
+    path: '/doctor_canceled_appointments',
+    name: 'doctor_canceled_appointments',
+    component: doctorCanceledAppointmentsList
+  },
+  {
     path: '/pacients_appointments',
     name: 'pacients_appointments',
     component: pacientsAppointmentsList
+  },
+  {
+    path: '/pacients_next_appointments',
+    name: 'pacients_next_appointments',
+    component: pacientsFutureAppointmentsList
+  },
+  {
+    path: '/pacients_historic',
+    name: 'pacients_historic',
+    component: pacientsPastAppointmentsList
   }
 ];
 

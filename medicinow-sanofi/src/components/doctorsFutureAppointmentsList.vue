@@ -56,7 +56,7 @@
     </div>
     <div  v-for="appointment in appointments" class="modal-card" role="button" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 1px; border-radius: 10px; border-color: blue; height: auto; margin-left: 15px;" aria-controls="contentIdForA11y1" slot="trigger">
 
-      <div style="padding: 20px;">
+      <div v-if="appointment.canceled != true" style="padding: 20px;">
         <p style="fontWeight: bold;">Data</p>
           {{appointment_day}}
         <p style="fontWeight: bold;">Hora</p>
@@ -132,7 +132,7 @@ export default {
   mounted() {
 
     this.submitedName = this.$session.get('userName'),
-    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_day_list/${this.appointment_day}/${this.doctor_id}`, {
+    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_next_list/${this.appointment_day}/${this.doctor_id}`, {
        headers: {
          'Access-Control-Allow-Credentials' : true,
          'Access-Control-Allow-Methods':'*',
