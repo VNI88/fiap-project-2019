@@ -144,5 +144,6 @@ methods: {
 }
 .buttonPosition {
   padding-left:100px;
+  align-self: center;
 }
 </style>

@@ -53,11 +53,7 @@
     <div v-if="zeroAppointments === 0" style ="fontWeight: bold; text-align: center; fontSize: 40px; padding: 100px;">
       <p >Você não possui consultas marcadas para hoje.</p>
     </div>
-    <b-collapse
-        :open="false"
-        aria-id="contentIdForA11y1">
     <div  v-for="appointment in appointments" class="modal-card" role="button" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 1px; border-radius: 10px; border-color: blue; height: auto; margin-left: 15px;" aria-controls="contentIdForA11y1" slot="trigger">
-
       <div style="padding: 20px;">
         <p style="fontWeight: bold;">Data</p>
           {{appointment_day}}
@@ -88,7 +84,6 @@
         </div>
       </b-modal>
     </div>
-    </b-collapse>
   </section>
 </template>
 
@@ -127,7 +122,7 @@ export default {
       street_address: [],
       office_id: null,
       zeroAppointments: null,
-      doctor_id: this.$session.get('doctor_id'),
+      pacient_id: this.$session.get('pacient_id'),
       token: this.$session.get('token')
     }
   },
@@ -135,7 +130,7 @@ export default {
   mounted() {
 
     this.submitedName = this.$session.get('userName'),
-    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_day_list/2019-09-18/${this.doctor_id}`, {
+    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/pacient_day_list/${this.appointment_day}/${this.pacient_id}`, {
        headers: {
          'Access-Control-Allow-Credentials' : true,
          'Access-Control-Allow-Methods':'*',
@@ -157,7 +152,6 @@ export default {
        console.log(error.response);
        if (error.response.data.error.received === 0) {
          this.zeroAppointments = 0
-         console.log(this.zeroAppointments)
        }
      });
 
@@ -188,7 +182,7 @@ export default {
       .then((response) =>{
         console.log(response);
         this.isCardModalActive = true
-        this.$router.push('/doctor_appointments')
+        this.$router.push('/pacients_appointments')
         }
       )
       .catch((error) => {

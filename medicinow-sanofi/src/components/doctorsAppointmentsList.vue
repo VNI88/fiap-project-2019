@@ -53,9 +53,6 @@
     <div v-if="zeroAppointments === 0" style ="fontWeight: bold; text-align: center; fontSize: 40px; padding: 100px;">
       <p >Você não possui consultas marcadas para hoje.</p>
     </div>
-    <b-collapse
-        :open="false"
-        aria-id="contentIdForA11y1">
     <div  v-for="appointment in appointments" class="modal-card" role="button" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 1px; border-radius: 10px; border-color: blue; height: auto; margin-left: 15px;" aria-controls="contentIdForA11y1" slot="trigger">
 
       <div style="padding: 20px;">
@@ -69,8 +66,8 @@
           {{appointment.brand}} {{appointment.plan}}
         <p style="fontWeight: bold;">Consultório</p>
           {{appointment.street_address}}
-
       </div>
+
       <b-field grouped position="is-right" style="margin: 20px; ">
         <b-button size="is-medium" type="is-danger" v-on:click="cancelAppointment(appointment.appointment_id)">Cancelar Consulta</b-button>
       </b-field>
@@ -88,7 +85,6 @@
         </div>
       </b-modal>
     </div>
-    </b-collapse>
   </section>
 </template>
 
@@ -135,7 +131,7 @@ export default {
   mounted() {
 
     this.submitedName = this.$session.get('userName'),
-    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_day_list/2019-09-18/${this.doctor_id}`, {
+    axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_day_list/${this.appointment_day}/${this.doctor_id}`, {
        headers: {
          'Access-Control-Allow-Credentials' : true,
          'Access-Control-Allow-Methods':'*',
@@ -177,7 +173,7 @@ export default {
 
     cancelAppointment: function(appointment_id) {
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      axios.delete( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${appointment_id}`,{
+      axios.put( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${appointment_id}`,{
         headers: {
           'Access-Control-Allow-Credentials' : true,
           'Access-Control-Allow-Methods':'*',
