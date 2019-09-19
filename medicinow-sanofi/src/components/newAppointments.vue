@@ -7,7 +7,7 @@
           </b-navbar-item>
       </template>
       <template slot="start">
-        <b-navbar-item href="/new_appointments">
+        <b-navbar-item href="/#/new_appointment">
           <a
           class="navbar-item"
           role="button">
