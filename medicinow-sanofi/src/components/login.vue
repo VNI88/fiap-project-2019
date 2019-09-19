@@ -29,7 +29,6 @@
               name="password"
               v-validate="'required|min:8'"
               type="password"
-              password-reveal
               placeholder="Sua senha"
               required>
               </b-input>

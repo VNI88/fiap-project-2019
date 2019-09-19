@@ -58,7 +58,7 @@
       </template>
     </b-navbar>
 
-    <b-steps v-model="activeStep" :animated="isAnimated" type="is-info" :has-navigation="false">
+    <b-steps v-model="activeStep" :animated="isAnimated" :animated="isAnimated" type="is-info" :has-navigation="false">
       <b-step-item label="Especialidade" :clickable="isStepsClickable">
         <b-field grouped style="padding-top: 40px; padding-bottom: 40px;" >
           <b-autocomplete
