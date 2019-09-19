@@ -24,9 +24,9 @@
               <span>Listar consultas</span>
             </a>
 
-            <b-dropdown-item aria-role="listitem">Consultas de hoje</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Próximas consultas</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem">Consultas canceladas</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem"  href="/#/pacients_appointments">Consultas de hoje</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem"  href="/#/pacients_next_appointments">Próximas consultas</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem"  href="/#/pacients_historic">Histórico</b-dropdown-item>
           </b-dropdown>
         </b-navbar-item>
 

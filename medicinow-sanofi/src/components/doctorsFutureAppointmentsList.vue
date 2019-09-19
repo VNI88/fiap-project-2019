@@ -16,10 +16,10 @@
               <span>Listar consultas</span>
             </a>
 
-            <b-dropdown-item aria-role="listitem"  href="/doctor_appointments">Consultas de hoje</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem"  href="/doctor_next_appointments">Próximas consultas</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem"  href="/doctor_historic">Histórico</b-dropdown-item>
-            <b-dropdown-item aria-role="listitem"  href="/doctor_canceled_appointments">Consultas canceladas</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem"  href="/#/doctor_appointments">Consultas de hoje</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem"  href="/#/doctor_next_appointments">Próximas consultas</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem"  href="/#/doctor_historic">Histórico</b-dropdown-item>
+            <b-dropdown-item aria-role="listitem"  href="/#/doctor_canceled_appointments">Consultas canceladas</b-dropdown-item>
           </b-dropdown>
         </b-navbar-item>
 
@@ -52,9 +52,9 @@
     </b-navbar>
 
     <div v-if="zeroAppointments === 0" style ="fontWeight: bold; text-align: center; fontSize: 40px; padding: 100px;">
-      <p >Você não possui consultas marcadas para hoje.</p>
+      <p >Você não possui histórico de consultas.</p>
     </div>
-    <div  v-for="appointment in appointments" class="modal-card" role="button" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 1px; border-radius: 10px; border-color: blue; height: auto; margin-left: 15px;" aria-controls="contentIdForA11y1" slot="trigger">
+    <div  v-for="appointment in appointments" class="modal-card" role="button" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 1px; border-radius: 10px; border-color: blue; height: auto; margin-left: 15px; margin-right: 15px;" aria-controls="contentIdForA11y1" slot="trigger">
 
       <div v-if="appointment.canceled != true" style="padding: 20px;">
         <p style="fontWeight: bold;">Data</p>
