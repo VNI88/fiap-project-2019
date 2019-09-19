@@ -132,7 +132,6 @@ export default {
     }
   },
 
-//axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_day_list/${this.appointment_day}/${this.doctor_id}`,
   mounted() {
 
     this.submitedName = this.$session.get('userName'),
