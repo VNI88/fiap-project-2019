@@ -159,7 +159,7 @@
                 <p style="fontWeight: bold;" >Convênio:</p>
                 {{this.selectedMedicalAgreementBrand}} {{this.selectedMedicalAgreementPlan}}
                 <p style="fontWeight: bold;" >Endereço:</p>
-                {{this.streetAddress}}
+                {{this.street_address}}
               </p>
             </div>
           </div>
@@ -255,7 +255,7 @@ export default {
       doctor_id: null,
       ma: null,
       office_id: null,
-      streetAddress: null,
+      street_address: null,
       id: null
     }
   },
@@ -313,14 +313,13 @@ export default {
     },
 
     postAppointment: function() {
-      const proxyurl = "https://cors-anywhere.herokuapp.com/";
       axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/appointments', {
         pacient_id: this.pacient_id,
         doctor_id: this.doctor_id,
-        medical_agreement: this.ma.id,
-        appointment_day: this.date,
-        appointment_hour: this.appointment_hour,
-        office_id: this.office_id
+        medical_agreement_id: this.ma,
+        office_id: this.office_id,
+        appointment_day: this.appointment_day,
+        appointment_hour: this.appointment_hour
       },{
         headers: {
           'Access-Control-Allow-Credentials' : true,
@@ -332,8 +331,11 @@ export default {
       .then((response) =>{
         console.log(response);
 
-        this.isCardModalActive = true
-         this.$router.push('/new_appointment')
+
+        setTimeout(() => {
+          this.isCardModalActive = true
+          this.$router.push('/pacients_appointments')}, 3 * 1000)
+
         }
       )
       .catch((error) => {
@@ -384,7 +386,6 @@ export default {
     },
 
     getDoctorsInfo: function(doctor_id) {
-      console.log(this.token)
       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors_data/${doctor_id}`,{
          headers: {
            'Access-Control-Allow-Credentials' : true,
@@ -397,7 +398,8 @@ export default {
          console.log(response);
          this.ma = response.data.data.medical_agreement_id
          this.office_id = response.data.data.office_id
-         this.streetAddress = response.data.data.streetAddress
+         this.street_address = response.data.data.street_address
+         console.log(this.street_address)
        })
        .catch((error) => {
          console.log(error.response);
