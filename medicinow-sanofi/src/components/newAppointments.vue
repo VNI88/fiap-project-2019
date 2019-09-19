@@ -213,6 +213,9 @@ export default {
        'Mastologia',
        'Nefrologia',
        'Hematologia',
+       'Cardiologia',
+       'Oncologista',
+       'Ginecologista'
       ],
 
      medicalAgreementBrandData: [
