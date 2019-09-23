@@ -9,7 +9,7 @@ import routes from './routes';
 Vue.config.productionTip = false
 
 Vue.use(VueRouter)
-Vue.use(Buefy)
+Vue.use(Buefy, {defaultIconPack: 'fas'});
 
 const router = new VueRouter({routes});
 new Vue({

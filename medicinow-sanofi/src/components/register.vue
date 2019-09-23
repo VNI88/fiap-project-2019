@@ -42,7 +42,9 @@
                size="is-medium"
                v-cleave="masks.custom"
                @input.native="onInput"
-               placeholder="Insira um telefone para contato aqui - Exemplo: (11)984676554"></b-input>
+               placeholder="Insira um telefone para contato aqui - Exemplo: (11)984676554"
+               icon-pack="fas"
+               icon="phone"></b-input>
           </b-field>
 
           <b-field
@@ -56,7 +58,9 @@
                 type="email"
                 size="is-medium"
                 maxlength="30"
-                placeholder="Insira o seu email aqui">
+                placeholder="Insira o seu email aqui"
+                icon-pack="far"
+                icon="envelope">
               </b-input>
           </b-field>
 
@@ -72,7 +76,9 @@
                 size="is-medium"
                 maxlength="8"
                 password-reveal
-                placeholder="Insira o sua senha aqui">
+                placeholder="Insira o sua senha aqui"
+                icon-pack="fas"
+                icon="lock">
               </b-input>
           </b-field>
 
@@ -103,7 +109,9 @@
                 name="speciality"
                 maxlength="20"
                 size="is-medium"
-                placeholder="Insira a sua Especialidade"></b-input>
+                placeholder="Insira a sua Especialidade"
+                icon-pack="fas"
+                icon="address-card"></b-input>
               </b-field>
 
               <b-field label="Endereço">
@@ -112,7 +120,9 @@
                 name="street_address"
                 maxlength="60"
                 size="is-medium"
-                placeholder="Insira o endereço de seu escritório"></b-input>
+                placeholder="Insira o endereço de seu escritório"
+                icon-pack="fas"
+                icon="map-marker-alt"></b-input>
               </b-field>
 
               <b-field  label="Convênio" >

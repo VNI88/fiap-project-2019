@@ -16,6 +16,8 @@
               v-validate="'required'"
               type="email"
               placeholder="Seu email"
+              icon-pack="far"
+              icon="envelope"
               required>
               </b-input>
             </b-field>
@@ -30,6 +32,9 @@
               v-validate="'required|min:8'"
               type="password"
               placeholder="Sua senha"
+              password-reveal
+              icon-pack="fas"
+              icon="unlock"
               required>
               </b-input>
             </b-field>

@@ -1,4 +1,3 @@
-import landingPage from './components/landingPage.vue';
 import newAppointments  from './components/newAppointments.vue';
 import  doctorsAppointmentsList from './components/doctorsAppointmentsList.vue';
 import  doctorFutureAppointmentsList from './components/doctorsFutureAppointmentsList.vue';

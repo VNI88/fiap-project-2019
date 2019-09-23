@@ -58,7 +58,11 @@
       </template>
     </b-navbar>
 
-    <b-steps v-model="activeStep" :animated="isAnimated"  type="is-info" :has-navigation="false">
+
+    <b-steps v-model="activeStep" :animated="isAnimated"  type="is-info" :has-navigation="false" >
+
+      <div style="margin-left:120px; margin-right:150px; margin-top: 20px">
+
       <b-step-item label="Especialidade" :clickable="isStepsClickable">
         <b-field grouped style="padding-top: 40px; padding-bottom: 40px;" >
           <b-autocomplete
@@ -180,6 +184,7 @@
         </b-field>
           </div>
       </b-step-item>
+    </div>
     </b-steps>
   </section>
 </template>
@@ -203,7 +208,7 @@ export default {
   data() {
    return {
      speciality_data: [
-       'Endócrinologia',
+       'Endocrinologia',
        'Pediatria',
        'Ortopedia',
        'Urologia',
@@ -243,6 +248,7 @@ export default {
       activeStep: 0,
       isAnimated: true,
       isStepsClickable: false,
+      hasNavigation: false,
       doctors: null,
       submitedName: null ,
       date: null,
@@ -417,6 +423,7 @@ export default {
       console.log(this.appointment_hour)
       if(this.date != null && this.hour != null){
        this.isStepsClickable = true
+       this.hasNavigation = true
        this.getFreeDoctors()
       }
 
