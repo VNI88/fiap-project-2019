@@ -59,9 +59,8 @@
     </b-navbar>
 
 
-    <b-steps v-model="activeStep" :animated="isAnimated"  type="is-info" :has-navigation="false" >
+    <b-steps v-model="activeStep" :animated="isAnimated"  type="is-info" :has-navigation="false" style="max-width:1000px; margin: 40px auto ">
 
-      <div style="margin-left:120px; margin-right:150px; margin-top: 20px">
 
       <b-step-item label="Especialidade" :clickable="isStepsClickable">
         <b-field grouped style="padding-top: 40px; padding-bottom: 40px;" >
@@ -75,7 +74,6 @@
            >
            <template slot="empty">Especialidade não encontrada</template>
           </b-autocomplete>
-          <button class="button is-info" style="padding-right:10px;" v-on:click="validateFields">Buscar</button>
         </b-field>
 
         <b-field grouped style="padding-top: 5px; padding-bottom: 40px;" >
@@ -117,15 +115,22 @@
             </b-datepicker>
           </b-field>
 
-          <b-field style="padding-right: 10px;" expanded>
+          <b-field style="padding-left: 10px;" expanded>
             <b-timepicker
                 name="hour"
                 v-model="hour"
                 placeholder="Clique para selecionar a hora"
                 :enable-seconds="enableSeconds"
-                :hour-format="format" >
+                :hour-format="format"
+                >
             </b-timepicker>
           </b-field>
+        </b-field>
+
+          <b-field grouped position="is-centered" style="padding-left: 10px; padding-top: 10px;" v-if="hour != null" >
+          <b-button type="is-info" style="width:100%;" v-on:click="validateFields" >
+              Buscar
+          </b-button>
         </b-field>
       </b-step-item>
 
@@ -184,7 +189,8 @@
         </b-field>
           </div>
       </b-step-item>
-    </div>
+
+    <!-- </div> -->
     </b-steps>
   </section>
 </template>
@@ -266,7 +272,7 @@ export default {
       ma: null,
       office_id: null,
       street_address: null,
-      id: null
+      id: null,
     }
   },
 
