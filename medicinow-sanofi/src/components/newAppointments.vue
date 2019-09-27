@@ -128,7 +128,10 @@
         </b-field>
 
           <b-field grouped position="is-centered" style="padding-left: 10px; padding-top: 10px;" v-if="hour != null" >
-          <b-button type="is-info" style="width:100%;" v-on:click="validateFields" >
+          <b-button type="is-info" style="width:100%;" v-if="buttonStatus==true" v-on:click="validateFields" >
+              Buscar
+          </b-button>
+          <b-button type="is-info" style="width:100%;" v-if="buttonStatus==false" disabled v-on:click="validateFields" >
               Buscar
           </b-button>
         </b-field>
@@ -173,7 +176,8 @@
             </div>
           </div>
           <b-field grouped position="is-centered">
-          <b-button size="is-medium" type="is-info" v-on:click="postAppointment">Marcar Consulta</b-button>
+          <b-button size="is-medium" type="is-info" v-if="buttonStatus==true" v-on:click="postAppointment">Marcar Consulta</b-button>
+          <b-button size="is-medium" type="is-info" v-if="buttonStatus==false" loading v-on:click="postAppointment">Marcar Consulta</b-button>
           <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
             <div class="card" style="border-radius: 10px; ">
                 <div class="card-content">
@@ -273,6 +277,7 @@ export default {
       office_id: null,
       street_address: null,
       id: null,
+      buttonStatus: true
     }
   },
 
@@ -329,6 +334,7 @@ export default {
     },
 
     postAppointment: function() {
+      this.buttonStatus = false;
       axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/appointments', {
         pacient_id: this.pacient_id,
         doctor_id: this.doctor_id,
@@ -347,14 +353,17 @@ export default {
       .then((response) =>{
         console.log(response);
 
-
+        this.isCardModalActive = true
+        this.buttonStatus = true;
         setTimeout(() => {
-          this.isCardModalActive = true
+
+
           this.$router.push('/pacients_appointments')}, 3 * 1000)
 
         }
       )
       .catch((error) => {
+        this.buttonStatus = true;
         console.log(error.response);
       });
     },
@@ -394,9 +403,10 @@ export default {
       .then((response) =>{
         console.log(response);
         this.doctors = response.data.data
-
+        this.buttonStatus = true;
        })
        .catch((error) => {
+         this.buttonStatus = true;
          console.log(error.response);
        });
     },
@@ -423,6 +433,7 @@ export default {
     },
 
     validateFields: function () {
+      this.buttonStatus = false
       console.log(this.hour)
       this.appointment_day =`${moment(this.date).format('YYYY-MM-DD')}`
       this.appointment_hour =  `${moment(this.hour).format('HH:MM')}`
