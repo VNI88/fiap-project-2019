@@ -76,7 +76,7 @@
 
       </div>
       <b-field grouped position="is-right" style="margin: 20px; ">
-        <b-button size="is-medium" type="is-danger" v-on:click="cancelAppointment(appointment.appointment_id)">Cancelar Consulta</b-button>
+        <b-button size="is-medium" :disabled="buttonStatus" type="is-danger" v-on:click="cancelAppointment(appointment.appointment_id)">Cancelar Consulta</b-button>
       </b-field>
 
       <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
@@ -125,7 +125,8 @@ export default {
       office_id: null,
       zeroAppointments: null,
       pacient_id: this.$session.get('pacient_id'),
-      token: this.$session.get('token')
+      token: this.$session.get('token'),
+      buttonStatus: false
     }
   },
 
@@ -148,6 +149,7 @@ export default {
     },
 
     getPacientDayAppointments: function () {
+      const loadingComponent = this.$buefy.loading.open({})
       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/pacient_day_list/${this.appointment_day}/${this.pacient_id}`, {
          headers: {
            'Access-Control-Allow-Credentials' : true,
@@ -159,8 +161,7 @@ export default {
        .then((response) =>{
          console.log(response);
 
-         const loadingComponent = this.$buefy.loading.open({})
-         setTimeout(() => loadingComponent.close(), 3 * 1000)
+         loadingComponent.close()
 
          this.appointments = response.data.data
         })
@@ -170,9 +171,11 @@ export default {
            this.zeroAppointments = 0
          }
        });
+
     },
 
     cancelAppointment: function(appointment_id) {
+      this.buttonStatus =  true
       const proxyurl = "https://cors-anywhere.herokuapp.com/";
       axios.put( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${appointment_id}`, {} ,{
         headers: {
@@ -183,12 +186,14 @@ export default {
         }
       })
       .then((response) =>{
+        this.buttonStatus = false
         console.log(response);
         this.isCardModalActive = true
         setTimeout(() => { this.$router.push('/pacients_appointments')}, 2000)
         }
       )
       .catch((error) => {
+        this.buttonStatus = false
         console.log(error.response);
       });
     },

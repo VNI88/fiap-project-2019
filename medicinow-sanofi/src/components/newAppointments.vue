@@ -58,11 +58,8 @@
       </template>
     </b-navbar>
 
-
     <b-steps v-model="activeStep" :animated="isAnimated"  type="is-info" :has-navigation="false" style="max-width:1000px; margin: 40px auto ">
-
-
-      <b-step-item label="Especialidade" :clickable="isStepsClickable">
+      <b-step-item label="Especialidades" :clickable="isStepsClickable">
         <b-field grouped style="padding-top: 40px; padding-bottom: 40px;" >
           <b-autocomplete
            style="padding-left: 10px;"
@@ -128,16 +125,13 @@
         </b-field>
 
           <b-field grouped position="is-centered" style="padding-left: 10px; padding-top: 10px;" v-if="hour != null" >
-          <b-button type="is-info" style="width:100%;" v-if="buttonStatus==true" v-on:click="validateFields" >
-              Buscar
-          </b-button>
-          <b-button type="is-info" style="width:100%;" v-if="buttonStatus==false" disabled v-on:click="validateFields" >
+          <b-button type="is-info" style="width:100%;" :loading="buttonStatus" :disabled="buttonStatus"  v-on:click="validateFields" >
               Buscar
           </b-button>
         </b-field>
       </b-step-item>
 
-      <b-step-item label="Médico"  :clickable="isStepsClickable" type="is-info" v-if="visible===true">
+      <b-step-item label="Médicos"  :clickable="isStepsClickable" type="is-info" v-if="visible===true">
 
         <div v-for="doctor in doctors" class="modal-card" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 2px; border-radius: 10px; border-color: blue; ">
           <b-button v-on:click="setFields(doctor)">
@@ -176,8 +170,7 @@
             </div>
           </div>
           <b-field grouped position="is-centered">
-          <b-button size="is-medium" type="is-info" v-if="buttonStatus==true" v-on:click="postAppointment">Marcar Consulta</b-button>
-          <b-button size="is-medium" type="is-info" v-if="buttonStatus==false" loading v-on:click="postAppointment">Marcar Consulta</b-button>
+          <b-button size="is-medium" type="is-info" :loading="buttonStatus" :disabled="buttonStatus" v-on:click="postAppointment">Marcar Consulta</b-button>
           <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
             <div class="card" style="border-radius: 10px; ">
                 <div class="card-content">
@@ -277,7 +270,7 @@ export default {
       office_id: null,
       street_address: null,
       id: null,
-      buttonStatus: true
+      buttonStatus: false
     }
   },
 
@@ -334,7 +327,7 @@ export default {
     },
 
     postAppointment: function() {
-      this.buttonStatus = false;
+      this.buttonStatus = true;
       axios.post( proxyurl+'https://mednow.herokuapp.com/api/v1/appointments', {
         pacient_id: this.pacient_id,
         doctor_id: this.doctor_id,
@@ -354,7 +347,7 @@ export default {
         console.log(response);
 
         this.isCardModalActive = true
-        this.buttonStatus = true;
+        this.buttonStatus = false;
         setTimeout(() => {
 
 
@@ -363,7 +356,7 @@ export default {
         }
       )
       .catch((error) => {
-        this.buttonStatus = true;
+        this.buttonStatus = false;
         console.log(error.response);
       });
     },
@@ -393,7 +386,6 @@ export default {
 
     getFreeDoctors: function() {
       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/doctors/${this.appointment_day}/${this.appointment_hour}`, {
-      },{
         headers: {
           'Access-Control-Allow-Credentials' : true,
           'Access-Control-Allow-Methods':'*',
@@ -403,10 +395,15 @@ export default {
       .then((response) =>{
         console.log(response);
         this.doctors = response.data.data
-        this.buttonStatus = true;
+        this.buttonStatus = false;
+        this.$buefy.notification.open({
+          message: 'Clique em Médicos para continuar',
+          duration: '3000',
+          type: 'is-success'
+        })
        })
        .catch((error) => {
-         this.buttonStatus = true;
+         this.buttonStatus = false;
          console.log(error.response);
        });
     },
@@ -421,11 +418,14 @@ export default {
          }
        })
        .then((response) =>{
-         console.log(response);
+         this.$buefy.notification.open({
+           message: 'Revise os dados na aba revisão.',
+           duration: '3000',
+           type: 'is-success'
+         })
          this.ma = response.data.data.medical_agreement_id
          this.office_id = response.data.data.office_id
          this.street_address = response.data.data.street_address
-         console.log(this.street_address)
        })
        .catch((error) => {
          console.log(error.response);
@@ -433,11 +433,9 @@ export default {
     },
 
     validateFields: function () {
-      this.buttonStatus = false
-      console.log(this.hour)
+      this.buttonStatus = true
       this.appointment_day =`${moment(this.date).format('YYYY-MM-DD')}`
       this.appointment_hour =  `${moment(this.hour).format('HH:MM')}`
-      console.log(this.appointment_hour)
       if(this.date != null && this.hour != null){
        this.isStepsClickable = true
        this.hasNavigation = true
