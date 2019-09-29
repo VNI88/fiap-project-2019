@@ -116,7 +116,7 @@ export default {
   mounted() {
 
     this.submitedName = this.$session.get('userName'),
-    this.getPacientDayAppointments()
+    this.getPacientPastAppointments()
   },
 
   beforeCreate: function () {
@@ -131,7 +131,7 @@ export default {
       return this.$router.push('/')
     },
 
-    getPacientDayAppointments: function () {
+    getPacientPastAppointments: function () {
       const loadingComponent = this.$buefy.loading.open({})
       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/pacient_past_list/${this.appointment_day}/${this.pacient_id}`, {
          headers: {

@@ -186,8 +186,6 @@
         </b-field>
           </div>
       </b-step-item>
-
-    <!-- </div> -->
     </b-steps>
   </section>
 </template>

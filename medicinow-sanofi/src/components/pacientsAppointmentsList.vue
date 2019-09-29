@@ -172,7 +172,6 @@ export default {
            this.zeroAppointments = 0
          }
        });
-
     },
 
     cancelAppointment: function(appointment_id) {

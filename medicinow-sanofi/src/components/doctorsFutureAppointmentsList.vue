@@ -154,7 +154,6 @@ export default {
          console.log(this.zeroAppointments)
        }
      });
-
   },
 
   beforeCreate: function () {
