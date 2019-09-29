@@ -59,7 +59,7 @@
     </b-navbar>
 
     <div v-if="zeroAppointments === 0" style ="fontWeight: bold; text-align: center; fontSize: 40px; padding: 100px;">
-      <p >Você não possui consultas marcadas para hoje.</p>
+      <p >Você não possui consultas agendadas.</p>
     </div>
     <div  v-for="appointment in appointments" class="modal-card" role="button" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 1px; border-radius: 10px; border-color: blue; height: auto; margin-left: 15px; margin-right: 15px;" aria-controls="contentIdForA11y1" slot="trigger">
       <div v-if="appointment.canceled != true" style="padding: 20px;">
@@ -76,7 +76,7 @@
 
       </div>
       <b-field grouped position="is-right" style="margin: 20px; ">
-        <b-button size="is-medium" type="is-danger" v-on:click="cancelAppointment(appointment.appointment_id)">Cancelar Consulta</b-button>
+        <b-button size="is-medium" type="is-danger" :disabled="buttonStatus" v-on:click="cancelAppointment(appointment.appointment_id)">Cancelar Consulta</b-button>
       </b-field>
 
       <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
@@ -125,7 +125,8 @@ export default {
       office_id: null,
       zeroAppointments: null,
       pacient_id: this.$session.get('pacient_id'),
-      token: this.$session.get('token')
+      token: this.$session.get('token'),
+      buttonStatus: false
     }
   },
 
@@ -148,6 +149,7 @@ export default {
     },
 
     getPacientDayAppointments: function () {
+      const loadingComponent = this.$buefy.loading.open({})
       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/pacient_next_list/${this.appointment_day}/${this.pacient_id}`, {
          headers: {
            'Access-Control-Allow-Credentials' : true,
@@ -158,13 +160,11 @@ export default {
        })
        .then((response) =>{
          console.log(response);
-
-         const loadingComponent = this.$buefy.loading.open({})
-         setTimeout(() => loadingComponent.close(), 3 * 1000)
-
+         loadingComponent.close()
          this.appointments = response.data.data
         })
        .catch((error) => {
+         loadingComponent.close()
          console.log(error.response);
          if (error.response.data.error.received === 0) {
            this.zeroAppointments = 0
@@ -173,7 +173,7 @@ export default {
     },
 
     cancelAppointment: function(appointment_id) {
-      const proxyurl = "https://cors-anywhere.herokuapp.com/";
+      this.buttonStatus = true;
       axios.put( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${appointment_id}`, {} ,{
         headers: {
           'Access-Control-Allow-Credentials' : true,
@@ -184,22 +184,16 @@ export default {
       })
       .then((response) =>{
         console.log(response);
+        this.buttonStatus = false;
         this.isCardModalActive = true
         setTimeout(() => { this.$router.replace('pacients_appointments')}, 2000)
         }
       )
       .catch((error) => {
+        this.buttonStatus = false;
         console.log(error.response);
       });
-    },
-
-    open() {
-        const loadingComponent = this.$buefy.loading.open({
-            container: this.isFullPage ? null : this.$refs.element.$el
-        })
-        setTimeout(() => loadingComponent.close(), 3 * 1000)
-    },
-
+    }
   }
 }
 </script>

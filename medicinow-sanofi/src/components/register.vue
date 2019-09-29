@@ -155,7 +155,7 @@
         </form>
       </div>
       <b-field grouped position="is-centered">
-        <b-button  v-on:click="validateBeforeSubmit"  size="is-medium" type="is-info"  rounded >Finalizar Cadastro</b-button>
+        <b-button  v-on:click="validateBeforeSubmit"  size="is-medium" type="is-info" :loading="buttonStatus" :disabled="buttonStatus"  rounded >Finalizar Cadastro</b-button>
       </b-field>
     </div>
   </section>
@@ -206,10 +206,11 @@ export default {
       selectedMedicalAgreementPlan: null,
       medical_agreement_id: null,
       office_id: null,
+      buttonStatus: false,
       masks: {
         custom: {
           delimiters: ['(', ')'],
-          blocks:[0, 2, 9],
+          blocks: [0, 2, 9],
           numericOnly: true
         }
       },
@@ -327,7 +328,7 @@ export default {
        })
        .then((response) =>{
          console.log(response)
-
+          this.buttonStatus = false;
           this.$buefy.toast.open({
             message: 'Cadastro realizado com sucesso!',
             type: 'is-success',
@@ -338,7 +339,7 @@ export default {
         })
         .catch((error) => {
             console.log(error.response);
-
+            this.buttonStatus = false;
             this.$buefy.toast.open({
               message: 'Por gentileza, tente novamente.',
               type: 'is-danger',
@@ -349,6 +350,7 @@ export default {
     },
 
       validateBeforeSubmit() {
+       this.buttonStatus = true;
        this.$validator.validateAll().then((result) => {
          if (result) {
            if (this.crm){
@@ -374,8 +376,7 @@ export default {
               .then((response) =>{
               console.log(response);
                this.pacient = response.data
-               // window.location.href = "/login";
-
+               this.buttonStatus = false;
                this.$buefy.toast.open({
                  message: 'Cadastro realizado com sucesso!',
                  type: 'is-success',
@@ -385,7 +386,7 @@ export default {
             })
             .catch((error) => {
               console.log(error.response);
-
+              this.buttonStatus = false;
               this.$buefy.toast.open({
                 message: 'Por gentileza, tente novamente.',
                 type: 'is-danger',
@@ -395,6 +396,7 @@ export default {
           }
         }
         else {
+          this.buttonStatus = false;
           this.$buefy.toast.open({
             message: 'O formulário não é válido! Por favor verifique os campos.',
             type: 'is-danger',

@@ -70,7 +70,7 @@
       </div>
 
       <b-field grouped position="is-right" style="margin: 20px; ">
-        <b-button size="is-medium" type="is-danger" v-on:click="cancelAppointment(appointment.appointment_id)">Cancelar Consulta</b-button>
+        <b-button size="is-medium" type="is-danger" :disabled="buttonStatus" v-on:click="cancelAppointment(appointment.appointment_id)">Cancelar Consulta</b-button>
       </b-field>
 
       <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep" >
@@ -125,12 +125,13 @@ export default {
       office_id: null,
       zeroAppointments: null,
       doctor_id: this.$session.get('doctor_id'),
-      token: this.$session.get('token')
+      token: this.$session.get('token'),
+      buttonStatus: false
     }
   },
 
   mounted() {
-
+    const loadingComponent = this.$buefy.loading.open({})
     this.submitedName = this.$session.get('userName'),
     axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_day_list/${this.appointment_day}/${this.doctor_id}`, {
        headers: {
@@ -142,15 +143,11 @@ export default {
      })
      .then((response) =>{
        console.log(response);
-
-       const loadingComponent = this.$buefy.loading.open({
-
-       })
-       setTimeout(() => loadingComponent.close(), 3 * 1000)
-
+       loadingComponent.close()
        this.appointments = response.data.data
       })
      .catch((error) => {
+       loadingComponent.close()
        console.log(error.response);
        if (error.response.data.error.received === 0) {
          this.zeroAppointments = 0
@@ -173,7 +170,7 @@ export default {
     },
 
     cancelAppointment: function(appointment_id) {
-      const proxyurl = "https://cors-anywhere.herokuapp.com/";
+      this.buttonStatus = true
       axios.put( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${appointment_id}`,{
         headers: {
           'Access-Control-Allow-Credentials' : true,
@@ -183,23 +180,17 @@ export default {
         }
       })
       .then((response) =>{
+        this.buttonStatus = false
         console.log(response);
         this.isCardModalActive = true
         this.$router.push('/doctor_appointments')
         }
       )
       .catch((error) => {
+        this.buttonStatus = false
         console.log(error.response);
       });
-    },
-
-    open() {
-        const loadingComponent = this.$buefy.loading.open({
-            container: this.isFullPage ? null : this.$refs.element.$el
-        })
-        setTimeout(() => loadingComponent.close(), 3 * 1000)
-    },
-
+    }
   }
 }
 </script>

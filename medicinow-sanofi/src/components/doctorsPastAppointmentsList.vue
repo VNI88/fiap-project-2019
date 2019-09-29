@@ -52,7 +52,7 @@
     </b-navbar>
 
     <div v-if="zeroAppointments === 0" style ="fontWeight: bold; text-align: center; fontSize: 40px; padding: 100px;">
-      <p >Você não possui consultas marcadas para hoje.</p>
+      <p >Você não possui histórico de consultas.</p>
     </div>
     <div  v-for="appointment in appointments" class="modal-card" role="button" style=" margin-top: 40px; width: auto; border-style: solid; border-width: 1px; border-radius: 10px; border-color: blue; height: auto; margin-left: 15px; margin-right: 15px;" aria-controls="contentIdForA11y1" slot="trigger">
 
@@ -113,7 +113,7 @@ export default {
   },
 
   mounted() {
-
+    const loadingComponent = this.$buefy.loading.open({})
     this.submitedName = this.$session.get('userName'),
     axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_past_list/${this.appointment_day}/${this.doctor_id}`, {
        headers: {
@@ -125,15 +125,11 @@ export default {
      })
      .then((response) =>{
        console.log(response);
-
-       const loadingComponent = this.$buefy.loading.open({
-
-       })
-       setTimeout(() => loadingComponent.close(), 3 * 1000)
-
+       loadingComponent.close()
        this.appointments = response.data.data
       })
      .catch((error) => {
+       loadingComponent.close()
        console.log(error.response);
        if (error.response.data.error.received === 0) {
          this.zeroAppointments = 0

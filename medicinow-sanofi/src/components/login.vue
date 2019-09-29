@@ -44,7 +44,7 @@
           </section>
           <footer class="modal-card-foot">
             <div class="buttonPosition">
-              <b-button  v-on:click="validateBeforeSubmit"  size="is-medium" type="is-info"  rounded >Login</b-button>
+              <b-button  v-on:click="validateBeforeSubmit"  size="is-medium" type="is-info" :loading="buttonStatus" :disabled="buttonStatus" rounded >Login</b-button>
             </div>
           </footer>
         </div>
@@ -71,10 +71,12 @@ export default {
     return {
       email: null,
       password: null,
+      buttonStatus: false
     }
   },
 methods: {
     validateBeforeSubmit() {
+      this.buttonStatus = true;
       this.$validator.validateAll().then((result) => {
         if (result) {
           const proxyurl = "https://cors-anywhere.herokuapp.com/";
@@ -89,6 +91,7 @@ methods: {
             }
           })
           .then((response) =>{
+            this.buttonStatus = false;
             if (response.data.status === 'success' && response.data.token && response.data.flag === 'pacient') {
               this.$session.start()
               this.$session.set('token', response.data.token)
@@ -108,22 +111,22 @@ methods: {
             }
           })
           .catch((error) => {
+            this.buttonStatus = false;
             console.log(error.response);
             this.$buefy.toast.open({
-              message: 'Por gentileza, tente novamente.',
+              message: 'Usuário não encontrado na plataforma. Por favor, registre-se.',
               type: 'is-danger',
               position: 'is-bottom'
             })
           });
         }
         else{
+          this.buttonStatus = false;
           this.$buefy.toast.open({
             message: 'Por gentileza, preencha os campos corretamente.',
             type: 'is-danger',
             position: 'is-bottom'
           })
-
-          return
         }
       });
     }

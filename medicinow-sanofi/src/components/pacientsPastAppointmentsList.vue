@@ -132,6 +132,7 @@ export default {
     },
 
     getPacientDayAppointments: function () {
+      const loadingComponent = this.$buefy.loading.open({})
       axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/pacient_past_list/${this.appointment_day}/${this.pacient_id}`, {
          headers: {
            'Access-Control-Allow-Credentials' : true,
@@ -142,48 +143,17 @@ export default {
        })
        .then((response) =>{
          console.log(response);
-
-         const loadingComponent = this.$buefy.loading.open({})
-         setTimeout(() => loadingComponent.close(), 3 * 1000)
-
+         loadingComponent.close()
          this.appointments = response.data.data
         })
        .catch((error) => {
+         loadingComponent.close()
          console.log(error.response);
          if (error.response.data.error.received === 0) {
            this.zeroAppointments = 0
          }
        });
-    },
-
-    cancelAppointment: function(appointment_id) {
-      const proxyurl = "https://cors-anywhere.herokuapp.com/";
-      axios.put( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/${appointment_id}`, {} ,{
-        headers: {
-          'Access-Control-Allow-Credentials' : true,
-          'Access-Control-Allow-Methods':'*',
-          'Access-Control-Allow-Headers':'*',
-          'Authorization': `Bearer ${this.token}`,
-        }
-      })
-      .then((response) =>{
-        console.log(response);
-        this.isCardModalActive = true
-        setTimeout(() => { this.$router.push('/pacients_appointments')}, 2000)
-        }
-      )
-      .catch((error) => {
-        console.log(error.response);
-      });
-    },
-
-    open() {
-        const loadingComponent = this.$buefy.loading.open({
-            container: this.isFullPage ? null : this.$refs.element.$el
-        })
-        setTimeout(() => loadingComponent.close(), 3 * 1000)
-    },
-
+    }
   }
 }
 </script>

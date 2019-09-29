@@ -166,6 +166,7 @@ export default {
          this.appointments = response.data.data
         })
        .catch((error) => {
+         loadingComponent.close()
          console.log(error.response);
          if (error.response.data.error.received === 0) {
            this.zeroAppointments = 0

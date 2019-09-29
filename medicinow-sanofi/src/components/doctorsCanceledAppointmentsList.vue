@@ -113,7 +113,7 @@ export default {
   },
 
   mounted() {
-
+    const loadingComponent = this.$buefy.loading.open({})
     this.submitedName = this.$session.get('userName'),
     axios.get( proxyurl+`https://mednow.herokuapp.com/api/v1/appointments/doctor_canceled_list/${this.doctor_id}`, {
        headers: {
@@ -125,15 +125,11 @@ export default {
      })
      .then((response) =>{
        console.log(response);
-
-       const loadingComponent = this.$buefy.loading.open({
-
-       })
-       setTimeout(() => loadingComponent.close(), 3 * 1000)
-
+       loadingComponent.close()
        this.appointments = response.data.data
       })
      .catch((error) => {
+       loadingComponent.close()
        console.log(error.response);
        if (error.response.data.error.received === 0) {
          this.zeroAppointments = 0
@@ -153,15 +149,7 @@ export default {
     logout: function () {
       this.$session.destroy()
       return this.$router.push('/')
-    },
-
-    open() {
-        const loadingComponent = this.$buefy.loading.open({
-            container: this.isFullPage ? null : this.$refs.element.$el
-        })
-        setTimeout(() => loadingComponent.close(), 3 * 1000)
-    },
-
+    }
   }
 }
 </script>
